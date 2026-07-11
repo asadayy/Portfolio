@@ -1,0 +1,27 @@
+/* Admin login page */
+
+.admin-login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background:
+    radial-gradient(
+      38rem 20rem at 15% -10%,
+      rgba(99, 102, 241, 0.18),
+      transparent 60%
+    ),
+    radial-gradient(
+      30rem 18rem at 95% 110%,
+      rgba(34, 211, 238, 0.1),
+      transparent 60%
+    ),
+    var(--bg);
+}
+
+.admin-login-card {
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.35);
+}

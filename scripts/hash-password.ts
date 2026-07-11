@@ -13,6 +13,11 @@ if (!password) {
 }
 
 const hash = bcrypt.hashSync(password, 12);
+// In local .env files Next.js expands $VAR references, so every $ in the
+// hash must be escaped. Vercel's dashboard takes the raw value.
+const escaped = hash.replace(/\$/g, "\\$");
 
-console.log("\nAdd this line to .env.local (and to Vercel env settings):\n");
-console.log(`ADMIN_PASSWORD_HASH=${hash}\n`);
+console.log("\nFor .env.local (escaped for Next.js env loading):\n");
+console.log(`ADMIN_PASSWORD_HASH=${escaped}\n`);
+console.log("For the Vercel env dashboard, use the raw value:\n");
+console.log(`${hash}\n`);
