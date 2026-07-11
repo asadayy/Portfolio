@@ -1,0 +1,56 @@
+/* Contact page */
+
+.contact-page .contact-header {
+  max-width: 62ch;
+}
+
+.contact-page .contact-intro {
+  font-size: 1.05rem;
+}
+
+.contact-card {
+  text-decoration: none;
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+
+.contact-card:hover,
+.contact-card:focus-visible {
+  transform: translateY(-3px);
+  border-color: rgba(99, 102, 241, 0.55);
+}
+
+.contact-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.9rem;
+  height: 2.9rem;
+  flex: 0 0 auto;
+  border-radius: 0.75rem;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.contact-text {
+  min-width: 0;
+}
+
+.contact-label {
+  font-weight: 700;
+  color: var(--bs-emphasis-color);
+}
+
+.contact-value {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+
+.contact-arrow {
+  color: var(--text-muted);
+  flex: 0 0 auto;
+}
+
+.contact-card:hover .contact-arrow {
+  color: var(--accent-2);
+}

@@ -1,0 +1,9 @@
+/* Projects index page */
+
+.projects-page .projects-header {
+  max-width: 62ch;
+}
+
+.projects-page .projects-intro {
+  font-size: 1.05rem;
+}

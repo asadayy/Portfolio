@@ -1,0 +1,21 @@
+/* Tech stack grid grouped by category */
+
+.tech-grid .tech-group-title {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.75rem;
+  color: var(--accent-2);
+  margin-bottom: 0.9rem;
+}
+
+.tech-grid .tech-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  padding: 0.45rem 0.7rem;
+}
+
+.tech-grid .tech-badge-icon {
+  border-radius: 2px;
+}
