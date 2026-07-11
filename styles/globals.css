@@ -1,0 +1,142 @@
+/* ============================================================
+   globals.css — Bootstrap core, design tokens, and base styles
+   shared by every page. Page/module-specific rules live in
+   their own stylesheet inside /styles.
+   ============================================================ */
+
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+/* ---------- Design tokens ---------- */
+:root {
+  --accent: #6366f1;
+  --accent-strong: #818cf8;
+  --accent-soft: rgba(99, 102, 241, 0.14);
+  --accent-2: #22d3ee;
+  --bg: #0b0f19;
+  --surface: #121826;
+  --surface-raised: #1a2233;
+  --line: rgba(148, 163, 184, 0.16);
+  --text-strong: #e2e8f0;
+  --text-muted: #94a3b8;
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI",
+    Roboto, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo,
+    monospace;
+}
+
+/* ---------- Bootstrap dark-theme overrides ---------- */
+[data-bs-theme="dark"] {
+  --bs-body-bg: var(--bg);
+  --bs-body-color: var(--text-strong);
+  --bs-secondary-color: var(--text-muted);
+  --bs-tertiary-bg: var(--surface-raised);
+  --bs-border-color: var(--line);
+  --bs-link-color: var(--accent-strong);
+  --bs-link-hover-color: var(--accent-2);
+  --bs-emphasis-color: #f8fafc;
+}
+
+/* ---------- Base ---------- */
+html {
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Pages render their content inside <main>; keeping it flexible
+   pins the footer to the bottom on short pages. */
+main {
+  flex: 1 0 auto;
+}
+
+code,
+pre,
+kbd {
+  font-family: var(--font-mono);
+}
+
+::selection {
+  background: rgba(99, 102, 241, 0.4);
+}
+
+/* Visible focus for keyboard users (a11y requirement) */
+:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+}
+
+/* ---------- Bootstrap component theming ---------- */
+.btn-primary {
+  --bs-btn-bg: var(--accent);
+  --bs-btn-border-color: var(--accent);
+  --bs-btn-hover-bg: #4f46e5;
+  --bs-btn-hover-border-color: #4f46e5;
+  --bs-btn-active-bg: #4338ca;
+  --bs-btn-active-border-color: #4338ca;
+  --bs-btn-disabled-bg: #3730a3;
+  --bs-btn-disabled-border-color: #3730a3;
+  --bs-btn-focus-shadow-rgb: 99, 102, 241;
+}
+
+.btn-outline-primary {
+  --bs-btn-color: var(--accent-strong);
+  --bs-btn-border-color: var(--accent);
+  --bs-btn-hover-bg: var(--accent);
+  --bs-btn-hover-border-color: var(--accent);
+  --bs-btn-active-bg: var(--accent);
+  --bs-btn-active-border-color: var(--accent);
+  --bs-btn-focus-shadow-rgb: 99, 102, 241;
+}
+
+.card {
+  --bs-card-bg: var(--surface);
+  --bs-card-border-color: var(--line);
+}
+
+.form-control,
+.form-select {
+  background-color: var(--surface);
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: var(--surface);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
+}
+
+/* ---------- Shared utilities ---------- */
+.text-gradient {
+  background: linear-gradient(90deg, var(--accent-strong), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.eyebrow {
+  display: inline-block;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent-2);
+}
+
+.badge-tech {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  font-weight: 500;
+}
