@@ -6,6 +6,11 @@
   display: flex;
   align-items: flex-start;
   min-height: 100vh;
+  /* Solid dark base — the page <body> is white for the public light theme,
+     and the admin content area is otherwise transparent, so it needs its
+     own background (var(--bg) is dark inside this data-bs-theme="dark"
+     scope). */
+  background: var(--bg);
 }
 
 /* Inter powers the whole admin UI (dashboard + login) */
