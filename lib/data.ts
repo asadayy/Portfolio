@@ -13,6 +13,7 @@ import {
   type ProjectDTO,
   type ExperienceDTO,
   type TechStackItemDTO,
+  type SiteContentDTO,
 } from "@/lib/serialize";
 
 /**
@@ -62,18 +63,30 @@ export const getExperiences = cache(async (): Promise<ExperienceDTO[]> => {
   return serialize<ExperienceDTO[]>(docs);
 });
 
+export const getTechItems = cache(async (): Promise<TechStackItemDTO[]> => {
+  await dbConnect();
+  const docs = await TechStackItem.find()
+    .sort({ category: 1, sortOrder: 1, name: 1 })
+    .lean();
+  return serialize<TechStackItemDTO[]>(docs);
+});
+
 export type TechByCategory = Array<{
   category: TechCategory;
   items: TechStackItemDTO[];
 }>;
 
 export const getTechByCategory = cache(async (): Promise<TechByCategory> => {
-  await dbConnect();
-  const docs = serialize<TechStackItemDTO[]>(
-    await TechStackItem.find().sort({ sortOrder: 1, name: 1 }).lean()
-  );
+  const docs = await getTechItems();
   return TECH_CATEGORIES.map((category) => ({
     category,
     items: docs.filter((doc) => doc.category === category),
   })).filter((group) => group.items.length > 0);
+});
+
+/** Full site-content documents (admin editor needs keys AND values). */
+export const getSiteContentDocs = cache(async (): Promise<SiteContentDTO[]> => {
+  await dbConnect();
+  const docs = await SiteContent.find().sort({ key: 1 }).lean();
+  return serialize<SiteContentDTO[]>(docs);
 });

@@ -21,8 +21,10 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const project = await getProjectBySlug(params.slug);
+  // Thrown here (before streaming starts) so the response gets a real 404
+  // status; thrown only in the page body it would stream a 200.
   if (!project) {
-    return { title: "Project not found" };
+    notFound();
   }
   return {
     title: project.title,
