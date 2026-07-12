@@ -10,6 +10,7 @@ import ProjectForm from "@/components/admin/ProjectForm";
 import ConfirmModal from "@/components/admin/ConfirmModal";
 import Toast, { type ToastMessage } from "@/components/admin/Toast";
 import { useDragReorder } from "@/components/admin/useDragReorder";
+import { PlusIcon } from "@/components/admin/admin-icons";
 
 export default function ProjectsManager({
   projects,
@@ -68,7 +69,8 @@ export default function ProjectsManager({
     return (
       <>
         <header className="admin-page-header">
-          <h1 className="h3 fw-bold mb-0">
+          <span className="admin-eyebrow">Projects</span>
+          <h1 className="admin-page-title">
             {editing === "new" ? "Add project" : `Edit: ${editing.title}`}
           </h1>
         </header>
@@ -85,20 +87,21 @@ export default function ProjectsManager({
 
   return (
     <>
-      <header className="admin-page-header d-flex flex-wrap justify-content-between align-items-center gap-2">
+      <header className="admin-page-header with-action">
         <div>
-          <h1 className="h3 fw-bold mb-1">Projects</h1>
-          <p className="text-secondary mb-0">
+          <span className="admin-eyebrow">Content</span>
+          <h1 className="admin-page-title">Projects</h1>
+          <p className="admin-page-lead">
             {projects.length} project{projects.length === 1 ? "" : "s"} — drag
             rows to reorder how they appear on /projects.
           </p>
         </div>
         <button
           type="button"
-          className="btn btn-primary"
+          className="btn btn-primary d-inline-flex align-items-center gap-2"
           onClick={() => setEditing("new")}
         >
-          + Add project
+          <PlusIcon size={16} /> Add project
         </button>
       </header>
 

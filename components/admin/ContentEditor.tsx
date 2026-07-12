@@ -60,8 +60,9 @@ export default function ContentEditor({ items }: { items: ContentItem[] }) {
   return (
     <>
       <header className="admin-page-header">
-        <h1 className="h3 fw-bold mb-1">Site content</h1>
-        <p className="text-secondary mb-0">
+        <span className="admin-eyebrow">Content</span>
+        <h1 className="admin-page-title">Site content</h1>
+        <p className="admin-page-lead">
           Page copy and links used across the public site. Values marked TODO
           still need your real details.
         </p>

@@ -9,6 +9,7 @@ import { adminFetch } from "@/lib/admin-client";
 import ConfirmModal from "@/components/admin/ConfirmModal";
 import Toast, { type ToastMessage } from "@/components/admin/Toast";
 import { useDragReorder } from "@/components/admin/useDragReorder";
+import { PlusIcon } from "@/components/admin/admin-icons";
 
 const EMPTY_FORM = {
   name: "",
@@ -89,16 +90,21 @@ export default function TechManager({
 
   return (
     <>
-      <header className="admin-page-header d-flex flex-wrap justify-content-between align-items-center gap-2">
+      <header className="admin-page-header with-action">
         <div>
-          <h1 className="h3 fw-bold mb-1">Tech stack</h1>
-          <p className="text-secondary mb-0">
+          <span className="admin-eyebrow">Content</span>
+          <h1 className="admin-page-title">Tech stack</h1>
+          <p className="admin-page-lead">
             {items.length} items, grouped by category on the homepage — drag
             rows to reorder within a category.
           </p>
         </div>
-        <button type="button" className="btn btn-primary" onClick={startNew}>
-          + Add tech
+        <button
+          type="button"
+          className="btn btn-primary d-inline-flex align-items-center gap-2"
+          onClick={startNew}
+        >
+          <PlusIcon size={16} /> Add tech
         </button>
       </header>
 

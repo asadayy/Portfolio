@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import AdminNav from "@/components/admin/AdminNav";
 import LogoutButton from "@/components/admin/LogoutButton";
+import { ExternalIcon } from "@/components/admin/admin-icons";
 import "@/styles/admin.css";
 
 export default async function AdminLayout({
@@ -12,31 +13,52 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession(authOptions);
+  const name = session?.user?.name ?? "admin";
+  const initial = name.charAt(0).toUpperCase();
 
   return (
     <div className="admin-shell">
       <aside className="admin-sidebar">
         <div className="admin-sidebar-top">
-          <p className="admin-brand fw-bold mb-0">
-            Admin<span className="brand-dot">.</span>
-          </p>
-          <p className="admin-user small text-secondary mb-3">
-            {session?.user?.name}
-          </p>
+          <Link href="/admin" className="admin-brand">
+            <span className="admin-brand-mark" aria-hidden>
+              AK
+            </span>
+            <span className="admin-brand-text">
+              <span className="admin-brand-title">Studio</span>
+              <span className="admin-brand-sub">Content admin</span>
+            </span>
+          </Link>
+
+          <div className="admin-user">
+            <span className="admin-user-avatar" aria-hidden>
+              {initial}
+            </span>
+            <span className="admin-user-meta">
+              <span className="admin-user-name">{name}</span>
+              <span className="admin-user-role">Signed in</span>
+            </span>
+          </div>
+
           <AdminNav />
         </div>
+
         <div className="admin-sidebar-bottom">
           <Link
             href="/"
-            className="btn btn-outline-primary btn-sm w-100 mb-2"
+            className="admin-side-action"
             target="_blank"
+            rel="noopener noreferrer"
           >
-            View site ↗
+            <ExternalIcon size={16} />
+            <span>View live site</span>
           </Link>
           <LogoutButton />
         </div>
       </aside>
-      <div className="admin-main">{children}</div>
+      <div className="admin-main">
+        <div className="admin-main-inner">{children}</div>
+      </div>
     </div>
   );
 }
