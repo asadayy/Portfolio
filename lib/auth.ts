@@ -2,6 +2,12 @@ import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 
+import {
+  clearLoginFailures,
+  lockoutRemainingMs,
+  recordLoginFailure,
+} from "@/lib/rate-limit";
+
 /**
  * Single-admin credential auth. The username and bcrypt password hash live in
  * env vars (ADMIN_USERNAME / ADMIN_PASSWORD_HASH) — no user collection.
@@ -15,7 +21,7 @@ export const authOptions: NextAuthOptions = {
         username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
+      async authorize(credentials, req) {
         const adminUsername = process.env.ADMIN_USERNAME;
         const adminPasswordHash = process.env.ADMIN_PASSWORD_HASH;
         if (!adminUsername || !adminPasswordHash) {
@@ -23,6 +29,22 @@ export const authOptions: NextAuthOptions = {
             "ADMIN_USERNAME / ADMIN_PASSWORD_HASH are not configured"
           );
         }
+
+        const forwardedFor = req?.headers?.["x-forwarded-for"];
+        const clientKey =
+          (typeof forwardedFor === "string"
+            ? forwardedFor.split(",")[0]?.trim()
+            : undefined) || "local";
+
+        const lockedMs = lockoutRemainingMs(clientKey);
+        if (lockedMs > 0) {
+          throw new Error(
+            `Too many failed attempts. Try again in ${Math.ceil(
+              lockedMs / 60000
+            )} minute(s).`
+          );
+        }
+
         if (!credentials?.username || !credentials.password) {
           return null;
         }
@@ -36,8 +58,10 @@ export const authOptions: NextAuthOptions = {
         const usernameOk = credentials.username === adminUsername;
 
         if (usernameOk && passwordOk) {
+          clearLoginFailures(clientKey);
           return { id: "admin", name: adminUsername };
         }
+        recordLoginFailure(clientKey);
         return null;
       },
     }),

@@ -23,6 +23,7 @@ export interface ProjectDTO {
   githubUrl?: string;
   imageUrl?: string;
   featured: boolean;
+  published: boolean;
   sortOrder: number;
   createdAt: string;
   updatedAt: string;

@@ -70,15 +70,23 @@ Sign in at `/admin/login`. Sections:
 
 - **Dashboard** — content counts and quick links.
 - **Projects** — add/edit/delete projects: title, slug (auto-generated from
-  the title, editable), short + long description (markdown), tech stack,
-  live/GitHub URLs, image upload, featured toggle, sort order. Deleting asks
-  for confirmation.
-- **Experience** — timeline entries with markdown bullet descriptions; check
-  "Current role" for an open-ended position ("Present").
+  the title, editable), short + long description (markdown with **live
+  preview**), tech stack, live/GitHub URLs, image upload, **featured** and
+  **published** toggles (unpublished drafts stay editable but are hidden from
+  every public page), sort order. Deleting asks for confirmation.
+- **Experience** — timeline entries with markdown bullet descriptions (live
+  preview); check "Current role" for an open-ended position ("Present").
 - **Tech stack** — name, category, optional icon URL, sort order.
 - **Site content** — every editable copy key (hero headline/subtext, about
   text, contact email, GitHub/LinkedIn/resume URLs) with a single **Save
   all** button. Values seeded with `TODO` still need your real details.
+- **Reordering** — drag table rows to reorder projects, experience entries,
+  or tech items; the order is saved immediately. (On touch devices, use the
+  numeric sort-order field in the edit form instead.)
+
+Login is rate-limited: 5 failed attempts lock that client out for 15 minutes
+(in-memory — see `lib/rate-limit.ts` for the serverless caveat and the
+Upstash/WAF upgrade path).
 
 Every save is validated (zod) server-side and immediately revalidates the
 affected public pages — no rebuild needed.
@@ -135,6 +143,14 @@ in `next.config.mjs`. Nothing else changes.
   [`/styles`](styles), one file per page/module, imported only where used. No
   Bootstrap JS bundle — the navbar collapse and modals are small
   React-controlled components.
+- **OG images** — each project page serves a generated 1200×630 social card
+  (`app/(site)/projects/[slug]/opengraph-image.tsx`). It runs on the **edge
+  runtime** because `@vercel/og`'s Node build crashes on Windows; since edge
+  can't use Mongoose, the card fetches its data from the public
+  `/api/og/[slug]` route. Other pages use the static `public/og-default.png`.
+- **Analytics** — Vercel Analytics is mounted in the root layout; it no-ops
+  locally and starts collecting once deployed on Vercel (enable Analytics in
+  the project dashboard).
 - **Known nuance** — `/projects/<unknown-slug>` renders the 404 page with a
   `noindex` meta tag but HTTP 200: an ancestor `loading.tsx` streams the
   response shell before `notFound()` runs (App Router limitation). Unknown

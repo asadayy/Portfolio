@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Analytics } from "@vercel/analytics/react";
 import "@/styles/globals.css";
 
 const geistSans = localFont({
@@ -21,6 +22,12 @@ export const metadata: Metadata = {
   },
   description:
     "Portfolio of Asad Khan, a full-stack developer building AI-integrated web applications with React, Next.js, and Node.js.",
+  openGraph: {
+    images: ["/og-default.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({
@@ -32,6 +39,7 @@ export default function RootLayout({
     <html lang="en" data-bs-theme="dark">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {children}
+        <Analytics />
       </body>
     </html>
   );

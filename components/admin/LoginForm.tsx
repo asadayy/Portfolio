@@ -25,7 +25,13 @@ export default function LoginForm() {
         redirect: false,
       });
       if (result?.error) {
-        setError("Invalid username or password.");
+        // NextAuth returns "CredentialsSignin" for a plain rejection; other
+        // strings are messages thrown by authorize (e.g. lockout notice).
+        setError(
+          result.error === "CredentialsSignin"
+            ? "Invalid username or password."
+            : result.error
+        );
         setSubmitting(false);
         return;
       }

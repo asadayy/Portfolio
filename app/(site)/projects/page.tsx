@@ -14,6 +14,7 @@ export const metadata: Metadata = {
     title: "Projects — Asad Khan",
     description:
       "Full project archive: AI-integrated platforms, enterprise systems, e-commerce, and NLP tools built by Asad Khan.",
+    images: ["/og-default.png"],
   },
 };
 

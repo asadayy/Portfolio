@@ -10,6 +10,7 @@ import { formatDateRange } from "@/lib/format";
 import ExperienceForm from "@/components/admin/ExperienceForm";
 import ConfirmModal from "@/components/admin/ConfirmModal";
 import Toast, { type ToastMessage } from "@/components/admin/Toast";
+import { useDragReorder } from "@/components/admin/useDragReorder";
 
 export default function ExperienceManager({
   experiences,
@@ -21,6 +22,7 @@ export default function ExperienceManager({
   const [deleting, setDeleting] = useState<ExperienceDTO | null>(null);
   const [busy, setBusy] = useState(false);
   const [toast, setToast] = useState<ToastMessage | null>(null);
+  const { list, rowProps } = useDragReorder(experiences, "experience", setToast);
 
   async function handleSave(input: ExperienceInput) {
     setBusy(true);
@@ -90,8 +92,8 @@ export default function ExperienceManager({
         <div>
           <h1 className="h3 fw-bold mb-1">Experience</h1>
           <p className="text-secondary mb-0">
-            {experiences.length} entr{experiences.length === 1 ? "y" : "ies"} on
-            the /experience timeline.
+            {experiences.length} entr{experiences.length === 1 ? "y" : "ies"} —
+            drag rows to reorder the /experience timeline.
           </p>
         </div>
         <button
@@ -107,6 +109,7 @@ export default function ExperienceManager({
         <table className="table table-hover">
           <thead>
             <tr>
+              <th scope="col" aria-label="Drag to reorder" />
               <th scope="col">#</th>
               <th scope="col">Role</th>
               <th scope="col">Organization</th>
@@ -117,9 +120,12 @@ export default function ExperienceManager({
             </tr>
           </thead>
           <tbody>
-            {experiences.map((experience) => (
-              <tr key={experience._id}>
-                <td>{experience.sortOrder}</td>
+            {list.map((experience, index) => (
+              <tr key={experience._id} {...rowProps(index)}>
+                <td className="drag-handle" title="Drag to reorder">
+                  ⠿
+                </td>
+                <td>{index + 1}</td>
                 <td className="fw-semibold">{experience.role}</td>
                 <td>{experience.organization}</td>
                 <td className="text-secondary">
@@ -145,9 +151,9 @@ export default function ExperienceManager({
                 </td>
               </tr>
             ))}
-            {experiences.length === 0 && (
+            {list.length === 0 && (
               <tr>
-                <td colSpan={5} className="text-center text-secondary py-4">
+                <td colSpan={6} className="text-center text-secondary py-4">
                   No experience entries yet.
                 </td>
               </tr>

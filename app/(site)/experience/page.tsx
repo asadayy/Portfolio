@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     title: "Experience — Asad Khan",
     description:
       "Work experience of Asad Khan: full-stack development at NEPRA and PMAS Arid Agriculture University.",
+    images: ["/og-default.png"],
   },
 };
 

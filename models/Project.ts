@@ -10,6 +10,8 @@ export interface IProject {
   githubUrl?: string;
   imageUrl?: string;
   featured: boolean;
+  /** Drafts (false) are hidden from all public pages but editable in admin. */
+  published: boolean;
   sortOrder: number;
   createdAt: Date;
   updatedAt: Date;
@@ -49,6 +51,7 @@ const ProjectSchema = new Schema<IProject>(
     githubUrl: { type: String, trim: true },
     imageUrl: { type: String, trim: true },
     featured: { type: Boolean, default: false },
+    published: { type: Boolean, default: true },
     sortOrder: { type: Number, default: 0 },
   },
   { timestamps: true }

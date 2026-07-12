@@ -5,6 +5,7 @@ import { useState } from "react";
 import type { ProjectDTO } from "@/lib/serialize";
 import type { ProjectInput } from "@/lib/validation";
 import ImageUploadField from "@/components/admin/ImageUploadField";
+import MarkdownField from "@/components/admin/MarkdownField";
 
 function slugify(value: string): string {
   return value
@@ -42,6 +43,7 @@ export default function ProjectForm({
   const [githubUrl, setGithubUrl] = useState(initial?.githubUrl ?? "");
   const [imageUrl, setImageUrl] = useState(initial?.imageUrl ?? "");
   const [featured, setFeatured] = useState(initial?.featured ?? false);
+  const [published, setPublished] = useState(initial?.published ?? true);
   const [sortOrder, setSortOrder] = useState(initial?.sortOrder ?? 0);
 
   const canSubmit =
@@ -66,6 +68,7 @@ export default function ProjectForm({
       githubUrl: githubUrl.trim(),
       imageUrl,
       featured,
+      published,
       sortOrder,
     });
   }
@@ -125,21 +128,15 @@ export default function ProjectForm({
           />
         </div>
         <div className="col-12">
-          <label htmlFor="project-long" className="form-label">
-            Long description * (markdown)
-          </label>
-          <textarea
+          <MarkdownField
             id="project-long"
-            className="form-control"
+            label="Long description * (markdown)"
             rows={12}
             required
             value={longDescription}
-            onChange={(event) => setLongDescription(event.target.value)}
-            aria-describedby="project-long-help"
+            onChange={setLongDescription}
+            help="Markdown supported: headings, lists, bold, links, tables."
           />
-          <div id="project-long-help" className="form-text">
-            Markdown supported: headings, lists, bold, links, tables.
-          </div>
         </div>
         <div className="col-12">
           <label htmlFor="project-tech" className="form-label">
@@ -213,6 +210,21 @@ export default function ProjectForm({
             />
             <label htmlFor="project-featured" className="form-check-label">
               Featured on homepage
+            </label>
+          </div>
+        </div>
+        <div className="col-md-3 col-6 d-flex align-items-end">
+          <div className="form-check form-switch mb-2">
+            <input
+              id="project-published"
+              type="checkbox"
+              className="form-check-input"
+              role="switch"
+              checked={published}
+              onChange={(event) => setPublished(event.target.checked)}
+            />
+            <label htmlFor="project-published" className="form-check-label">
+              Published{!published && " (draft — hidden from site)"}
             </label>
           </div>
         </div>

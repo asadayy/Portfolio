@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import type { ExperienceDTO } from "@/lib/serialize";
 import type { ExperienceInput } from "@/lib/validation";
+import MarkdownField from "@/components/admin/MarkdownField";
 
 function toDateInput(iso: string | null | undefined): string {
   return iso ? iso.slice(0, 10) : "";
@@ -150,17 +151,14 @@ export default function ExperienceForm({
           </div>
         </div>
         <div className="col-12">
-          <label htmlFor="exp-description" className="form-label">
-            Description * (markdown — achievement-focused bullets)
-          </label>
-          <textarea
+          <MarkdownField
             id="exp-description"
-            className="form-control"
+            label="Description * (markdown — achievement-focused bullets)"
             rows={8}
             required
             placeholder={"- Built X that did Y\n- Shipped Z used by N people"}
             value={description}
-            onChange={(event) => setDescription(event.target.value)}
+            onChange={setDescription}
           />
         </div>
         <div className="col-md-9">

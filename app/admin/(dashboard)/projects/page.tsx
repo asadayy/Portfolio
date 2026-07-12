@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { getProjects } from "@/lib/data";
+import { getAllProjects } from "@/lib/data";
 import ProjectsManager from "@/components/admin/ProjectsManager";
 
 export const metadata: Metadata = {
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function AdminProjectsPage() {
-  const projects = await getProjects();
+  const projects = await getAllProjects();
   return (
     <main className="admin-page">
       <ProjectsManager projects={projects} />

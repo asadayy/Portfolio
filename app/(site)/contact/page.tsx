@@ -20,6 +20,7 @@ export const metadata: Metadata = {
     title: "Contact — Asad Khan",
     description:
       "Get in touch with Asad Khan — email, GitHub, and LinkedIn.",
+    images: ["/og-default.png"],
   },
 };
 

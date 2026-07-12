@@ -8,6 +8,7 @@ import { TECH_CATEGORIES } from "@/lib/constants";
 import { adminFetch } from "@/lib/admin-client";
 import ConfirmModal from "@/components/admin/ConfirmModal";
 import Toast, { type ToastMessage } from "@/components/admin/Toast";
+import { useDragReorder } from "@/components/admin/useDragReorder";
 
 const EMPTY_FORM = {
   name: "",
@@ -27,6 +28,7 @@ export default function TechManager({
   const [deleting, setDeleting] = useState<TechStackItemDTO | null>(null);
   const [busy, setBusy] = useState(false);
   const [toast, setToast] = useState<ToastMessage | null>(null);
+  const { list, rowProps } = useDragReorder(items, "tech", setToast);
 
   function startNew() {
     setForm(EMPTY_FORM);
@@ -91,7 +93,8 @@ export default function TechManager({
         <div>
           <h1 className="h3 fw-bold mb-1">Tech stack</h1>
           <p className="text-secondary mb-0">
-            {items.length} items, grouped by category on the homepage.
+            {items.length} items, grouped by category on the homepage — drag
+            rows to reorder within a category.
           </p>
         </div>
         <button type="button" className="btn btn-primary" onClick={startNew}>
@@ -195,6 +198,7 @@ export default function TechManager({
         <table className="table table-hover">
           <thead>
             <tr>
+              <th scope="col" aria-label="Drag to reorder" />
               <th scope="col">#</th>
               <th scope="col">Name</th>
               <th scope="col">Category</th>
@@ -204,9 +208,12 @@ export default function TechManager({
             </tr>
           </thead>
           <tbody>
-            {items.map((item) => (
-              <tr key={item._id}>
-                <td>{item.sortOrder}</td>
+            {list.map((item, index) => (
+              <tr key={item._id} {...rowProps(index)}>
+                <td className="drag-handle" title="Drag to reorder">
+                  ⠿
+                </td>
+                <td>{index + 1}</td>
                 <td className="fw-semibold">{item.name}</td>
                 <td>
                   <span className="badge badge-tech">{item.category}</span>
@@ -231,9 +238,9 @@ export default function TechManager({
                 </td>
               </tr>
             ))}
-            {items.length === 0 && (
+            {list.length === 0 && (
               <tr>
-                <td colSpan={4} className="text-center text-secondary py-4">
+                <td colSpan={5} className="text-center text-secondary py-4">
                   No tech items yet.
                 </td>
               </tr>

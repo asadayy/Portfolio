@@ -9,6 +9,7 @@ import { adminFetch } from "@/lib/admin-client";
 import ProjectForm from "@/components/admin/ProjectForm";
 import ConfirmModal from "@/components/admin/ConfirmModal";
 import Toast, { type ToastMessage } from "@/components/admin/Toast";
+import { useDragReorder } from "@/components/admin/useDragReorder";
 
 export default function ProjectsManager({
   projects,
@@ -20,6 +21,7 @@ export default function ProjectsManager({
   const [deleting, setDeleting] = useState<ProjectDTO | null>(null);
   const [busy, setBusy] = useState(false);
   const [toast, setToast] = useState<ToastMessage | null>(null);
+  const { list, rowProps } = useDragReorder(projects, "projects", setToast);
 
   async function handleSave(input: ProjectInput) {
     setBusy(true);
@@ -87,8 +89,8 @@ export default function ProjectsManager({
         <div>
           <h1 className="h3 fw-bold mb-1">Projects</h1>
           <p className="text-secondary mb-0">
-            {projects.length} project{projects.length === 1 ? "" : "s"} — shown
-            on /projects ordered by sort order.
+            {projects.length} project{projects.length === 1 ? "" : "s"} — drag
+            rows to reorder how they appear on /projects.
           </p>
         </div>
         <button
@@ -104,9 +106,11 @@ export default function ProjectsManager({
         <table className="table table-hover">
           <thead>
             <tr>
+              <th scope="col" aria-label="Drag to reorder" />
               <th scope="col">#</th>
               <th scope="col">Title</th>
               <th scope="col">Slug</th>
+              <th scope="col">Status</th>
               <th scope="col">Featured</th>
               <th scope="col">Updated</th>
               <th scope="col" className="text-end">
@@ -115,12 +119,22 @@ export default function ProjectsManager({
             </tr>
           </thead>
           <tbody>
-            {projects.map((project) => (
-              <tr key={project._id}>
-                <td>{project.sortOrder}</td>
+            {list.map((project, index) => (
+              <tr key={project._id} {...rowProps(index)}>
+                <td className="drag-handle" title="Drag to reorder">
+                  ⠿
+                </td>
+                <td>{index + 1}</td>
                 <td className="fw-semibold">{project.title}</td>
                 <td>
                   <code>{project.slug}</code>
+                </td>
+                <td>
+                  {project.published !== false ? (
+                    <span className="badge text-bg-success">Published</span>
+                  ) : (
+                    <span className="badge text-bg-secondary">Draft</span>
+                  )}
                 </td>
                 <td>
                   {project.featured ? (
@@ -152,9 +166,9 @@ export default function ProjectsManager({
                 </td>
               </tr>
             ))}
-            {projects.length === 0 && (
+            {list.length === 0 && (
               <tr>
-                <td colSpan={6} className="text-center text-secondary py-4">
+                <td colSpan={8} className="text-center text-secondary py-4">
                   No projects yet — add your first one.
                 </td>
               </tr>

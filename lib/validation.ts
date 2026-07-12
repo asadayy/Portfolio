@@ -46,6 +46,7 @@ export const projectSchema = z.object({
   githubUrl: optionalUrl,
   imageUrl: imageRef,
   featured: z.boolean().default(false),
+  published: z.boolean().default(true),
   sortOrder: z.coerce.number().int().min(0).default(0),
 });
 

@@ -30,6 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: "Asad Khan — Full-Stack Developer",
       description,
       type: "website",
+      images: ["/og-default.png"],
     },
   };
 }

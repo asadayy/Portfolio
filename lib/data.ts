@@ -29,9 +29,15 @@ export const getSiteContent = cache(
   }
 );
 
+/**
+ * Public queries match `published: { $ne: false }` (not `true`) so documents
+ * created before the field existed remain visible without a migration.
+ */
+const PUBLISHED = { published: { $ne: false } };
+
 export const getProjects = cache(async (): Promise<ProjectDTO[]> => {
   await dbConnect();
-  const docs = await Project.find()
+  const docs = await Project.find(PUBLISHED)
     .sort({ sortOrder: 1, createdAt: -1 })
     .lean();
   return serialize<ProjectDTO[]>(docs);
@@ -39,7 +45,7 @@ export const getProjects = cache(async (): Promise<ProjectDTO[]> => {
 
 export const getFeaturedProjects = cache(async (): Promise<ProjectDTO[]> => {
   await dbConnect();
-  const docs = await Project.find({ featured: true })
+  const docs = await Project.find({ featured: true, ...PUBLISHED })
     .sort({ sortOrder: 1, createdAt: -1 })
     .lean();
   return serialize<ProjectDTO[]>(docs);
@@ -48,10 +54,19 @@ export const getFeaturedProjects = cache(async (): Promise<ProjectDTO[]> => {
 export const getProjectBySlug = cache(
   async (slug: string): Promise<ProjectDTO | null> => {
     await dbConnect();
-    const doc = await Project.findOne({ slug }).lean();
+    const doc = await Project.findOne({ slug, ...PUBLISHED }).lean();
     return doc ? serialize<ProjectDTO>(doc) : null;
   }
 );
+
+/** Admin list — includes drafts. */
+export const getAllProjects = cache(async (): Promise<ProjectDTO[]> => {
+  await dbConnect();
+  const docs = await Project.find()
+    .sort({ sortOrder: 1, createdAt: -1 })
+    .lean();
+  return serialize<ProjectDTO[]>(docs);
+});
 
 export const getExperiences = cache(async (): Promise<ExperienceDTO[]> => {
   await dbConnect();
