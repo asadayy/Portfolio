@@ -44,10 +44,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-bs-theme="light">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable}`}
-      >
+    // Font variables live on <html> (the :root scope) so that --font-sans,
+    // declared on :root, can substitute --font-inter. On <body> they were
+    // invisible to :root and the site fell back to the default font.
+    <html
+      lang="en"
+      data-bs-theme="light"
+      className={`${geistSans.variable} ${geistMono.variable} ${inter.variable}`}
+    >
+      <body>
         {children}
         <Analytics />
       </body>
