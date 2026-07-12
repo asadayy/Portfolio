@@ -16,6 +16,10 @@
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo,
     monospace;
 
+  /* Point Bootstrap's own font variable at Inter so every element and
+     Bootstrap component uses it, independent of cascade order. */
+  --bs-body-font-family: var(--font-sans);
+
   /* Monochrome tonal ramp — shared by the tech grid + project cards.
      Kept subtle so the site stays professional and restrained. */
   --c-blue: #171717;
