@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { getServerSession } from "next-auth";
 
+import { authOptions } from "@/lib/auth";
 import dbConnect from "@/lib/db";
 import Project from "@/models/Project";
 import Experience from "@/models/Experience";
@@ -8,11 +10,13 @@ import TechStackItem from "@/models/TechStackItem";
 import SiteContent from "@/models/SiteContent";
 import {
   ContentIcon,
+  DashboardIcon,
   ExperienceIcon,
   ExternalIcon,
   PlusIcon,
   ProjectsIcon,
   TechIcon,
+  TrendUpIcon,
 } from "@/components/admin/admin-icons";
 
 export const metadata: Metadata = {
@@ -22,10 +26,17 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
+function greeting(hour: number): string {
+  if (hour < 12) return "Good morning";
+  if (hour < 18) return "Good afternoon";
+  return "Good evening";
+}
+
 export default async function AdminDashboardPage() {
   await dbConnect();
-  const [projects, featured, drafts, experiences, techItems, contentKeys] =
+  const [session, projects, featured, drafts, experiences, techItems, contentKeys] =
     await Promise.all([
+      getServerSession(authOptions),
       Project.countDocuments(),
       Project.countDocuments({ featured: true }),
       Project.countDocuments({ published: false }),
@@ -33,6 +44,13 @@ export default async function AdminDashboardPage() {
       TechStackItem.countDocuments(),
       SiteContent.countDocuments(),
     ]);
+
+  const now = new Date();
+  const today = now.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
 
   const cards = [
     {
@@ -44,7 +62,7 @@ export default async function AdminDashboardPage() {
           ? `${featured} featured · ${drafts} draft${drafts === 1 ? "" : "s"}`
           : `${featured} featured`,
       Icon: ProjectsIcon,
-      tone: "indigo",
+      tone: "blue",
     },
     {
       href: "/admin/experience",
@@ -68,19 +86,23 @@ export default async function AdminDashboardPage() {
       count: contentKeys,
       hint: "editable copy keys",
       Icon: ContentIcon,
-      tone: "teal",
+      tone: "amber",
     },
   ];
 
   return (
     <main className="admin-page">
-      <header className="admin-page-header">
-        <span className="admin-eyebrow">Overview</span>
-        <h1 className="admin-page-title">Dashboard</h1>
-        <p className="admin-page-lead">
-          Everything on the public site is editable from here — changes go live
-          immediately.
-        </p>
+      <header className="admin-dash-header">
+        <span className="admin-dash-header-icon" aria-hidden>
+          <DashboardIcon size={26} />
+        </span>
+        <div>
+          <h1 className="admin-page-title mb-1">Dashboard</h1>
+          <p className="admin-page-lead mb-0">
+            {greeting(now.getHours())},{" "}
+            <strong>{session?.user?.name ?? "Admin"}</strong> — {today}
+          </p>
+        </div>
       </header>
 
       <div className="row g-3 g-lg-4 admin-stats">
@@ -90,12 +112,15 @@ export default async function AdminDashboardPage() {
               href={href}
               className={`admin-stat-card admin-stat-card--${tone}`}
             >
+              <span className="admin-stat-watermark" aria-hidden>
+                <Icon size={116} />
+              </span>
               <div className="admin-stat-top">
                 <span className="admin-stat-icon" aria-hidden>
                   <Icon size={20} />
                 </span>
-                <span className="admin-stat-arrow" aria-hidden>
-                  →
+                <span className="admin-stat-trend" aria-hidden>
+                  <TrendUpIcon size={15} />
                 </span>
               </div>
               <span className="admin-stat-count">{count}</span>
@@ -117,9 +142,7 @@ export default async function AdminDashboardPage() {
             </span>
             <span className="admin-quick-meta">
               <span className="admin-quick-label">Add a project</span>
-              <span className="admin-quick-sub">
-                Create a new case study
-              </span>
+              <span className="admin-quick-sub">Create a new case study</span>
             </span>
           </Link>
           <Link href="/admin/content" className="admin-quick-card">

@@ -8,6 +8,13 @@
   min-height: 100vh;
 }
 
+/* Inter powers the whole admin UI (dashboard + login) */
+.admin-shell,
+.admin-login-page {
+  font-family: var(--font-inter), system-ui, -apple-system, "Segoe UI", Roboto,
+    sans-serif;
+}
+
 /* ---------- Sidebar (fixed viewport height, sticky on scroll) ---------- */
 .admin-sidebar {
   position: sticky;
@@ -295,23 +302,51 @@
   gap: 1rem;
 }
 
-/* ---------- Dashboard stat cards ---------- */
+/* ---------- Dashboard header (icon chip + greeting) ---------- */
+.admin-dash-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 1.75rem;
+}
+
+.admin-dash-header-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.4rem;
+  height: 3.4rem;
+  flex: 0 0 auto;
+  border-radius: 0.9rem;
+  color: #0b0f19;
+  background: linear-gradient(135deg, var(--accent-strong), var(--accent-2));
+  box-shadow: 0 8px 22px rgba(99, 102, 241, 0.4);
+}
+
+/* ---------- Dashboard stat cards (multicolor) ---------- */
 .admin-stats {
   margin-bottom: 2.5rem;
 }
 
 .admin-stat-card {
-  --tone: var(--accent-strong);
-  --tone-soft: rgba(99, 102, 241, 0.16);
+  --tone: #818cf8;
+  --tone-soft: rgba(129, 140, 248, 0.15);
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
   height: 100%;
-  padding: 1.25rem 1.3rem 1.35rem;
+  padding: 1.3rem 1.4rem 1.4rem;
   border-radius: 1rem;
   border: 1px solid var(--line);
+  border-left: 4px solid var(--tone);
   background:
-    linear-gradient(160deg, rgba(148, 163, 184, 0.05), transparent 60%),
+    radial-gradient(
+      18rem 12rem at 100% 120%,
+      color-mix(in srgb, var(--tone) 16%, transparent),
+      transparent 70%
+    ),
     var(--surface);
   text-decoration: none;
   position: relative;
@@ -320,71 +355,81 @@
     box-shadow 0.18s ease;
 }
 
-.admin-stat-card::after {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--tone), transparent 70%);
-  opacity: 0.7;
-}
-
 .admin-stat-card:hover,
 .admin-stat-card:focus-visible {
   transform: translateY(-4px);
-  border-color: color-mix(in srgb, var(--tone) 55%, var(--line));
-  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.32);
+  border-color: var(--line);
+  border-left-color: var(--tone);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.34),
+    0 0 0 1px color-mix(in srgb, var(--tone) 30%, transparent);
 }
 
-.admin-stat-card--indigo {
-  --tone: #818cf8;
-  --tone-soft: rgba(129, 140, 248, 0.16);
+/* Large faint icon bleeding off the right edge */
+.admin-stat-watermark {
+  position: absolute;
+  right: -1.5rem;
+  bottom: -1.75rem;
+  color: var(--tone);
+  opacity: 0.08;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.admin-stat-card:hover .admin-stat-watermark,
+.admin-stat-card:focus-visible .admin-stat-watermark {
+  opacity: 0.14;
+  transform: scale(1.05) rotate(-4deg);
+}
+
+.admin-stat-card--blue {
+  --tone: #3b82f6;
 }
 .admin-stat-card--cyan {
   --tone: #22d3ee;
-  --tone-soft: rgba(34, 211, 238, 0.16);
 }
 .admin-stat-card--violet {
-  --tone: #a78bfa;
-  --tone-soft: rgba(167, 139, 250, 0.16);
+  --tone: #a855f7;
 }
-.admin-stat-card--teal {
-  --tone: #2dd4bf;
-  --tone-soft: rgba(45, 212, 191, 0.16);
+.admin-stat-card--amber {
+  --tone: #f59e0b;
+}
+.admin-stat-card--emerald {
+  --tone: #10b981;
+}
+.admin-stat-card--pink {
+  --tone: #ec4899;
 }
 
 .admin-stat-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.7rem;
+  position: relative;
+  z-index: 1;
 }
 
 .admin-stat-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.6rem;
+  height: 2.6rem;
   border-radius: 0.7rem;
   color: var(--tone);
-  background: var(--tone-soft);
+  background: color-mix(in srgb, var(--tone) 15%, transparent);
   border: 1px solid color-mix(in srgb, var(--tone) 35%, transparent);
 }
 
-.admin-stat-arrow {
-  color: var(--text-muted);
-  font-size: 1.1rem;
-  transform: translateX(-4px);
-  opacity: 0;
-  transition: transform 0.18s ease, opacity 0.18s ease;
-}
-
-.admin-stat-card:hover .admin-stat-arrow,
-.admin-stat-card:focus-visible .admin-stat-arrow {
-  transform: translateX(0);
-  opacity: 1;
-  color: var(--tone);
+.admin-stat-trend {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 0.5rem;
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.12);
 }
 
 .admin-stat-count {
@@ -392,16 +437,22 @@
   font-weight: 800;
   line-height: 1.05;
   color: #f8fafc;
+  position: relative;
+  z-index: 1;
 }
 
 .admin-stat-label {
   font-weight: 600;
   color: var(--bs-emphasis-color);
+  position: relative;
+  z-index: 1;
 }
 
 .admin-stat-hint {
   font-size: 0.85rem;
   color: var(--text-muted);
+  position: relative;
+  z-index: 1;
 }
 
 /* ---------- Quick actions ---------- */

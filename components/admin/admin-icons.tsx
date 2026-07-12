@@ -108,3 +108,12 @@ export function PlusIcon(props: IconProps) {
     </svg>
   );
 }
+
+export function TrendUpIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <path d="M3 17l6-6 4 4 8-8" />
+      <path d="M17 7h4v4" />
+    </svg>
+  );
+}
