@@ -5,6 +5,12 @@
   overflow: hidden;
   padding: 6.5rem 0 5.5rem;
   border-bottom: 1px solid var(--line);
+  background:
+    radial-gradient(
+      50rem 34rem at 82% 30%,
+      rgba(124, 58, 237, 0.1),
+      transparent 62%
+    );
 }
 
 .hero-glow {
@@ -13,15 +19,19 @@
   pointer-events: none;
   background:
     radial-gradient(
-      42rem 22rem at 18% -10%,
-      rgba(99, 102, 241, 0.22),
+      42rem 22rem at 12% -12%,
+      rgba(109, 40, 217, 0.12),
       transparent 60%
     ),
     radial-gradient(
-      36rem 20rem at 90% 10%,
-      rgba(34, 211, 238, 0.12),
+      34rem 20rem at 92% 8%,
+      rgba(124, 58, 237, 0.1),
       transparent 60%
     );
+}
+
+.hero-title {
+  color: var(--text-strong);
 }
 
 .hero-title {
@@ -59,14 +69,14 @@
 }
 
 .cta-band {
-  border: 1px solid rgba(99, 102, 241, 0.4);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
   background:
     radial-gradient(
-      30rem 12rem at 50% -40%,
-      rgba(99, 102, 241, 0.25),
+      34rem 16rem at 50% -30%,
+      rgba(124, 58, 237, 0.16),
       transparent 70%
     ),
-    var(--surface);
+    var(--surface-raised);
   border-radius: 1rem;
   padding: 3rem 1.5rem;
 }

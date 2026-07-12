@@ -6,14 +6,22 @@ import { ArrowRightIcon, ExternalLinkIcon, GitHubIcon } from "@/components/icons
 import "@/styles/project-card.css";
 
 const MAX_BADGES = 4;
+const TONES = ["blue", "violet", "emerald", "pink", "amber", "cyan"];
 
-export default function ProjectCard({ project }: { project: ProjectDTO }) {
+export default function ProjectCard({
+  project,
+  index = 0,
+}: {
+  project: ProjectDTO;
+  index?: number;
+}) {
   const shownTech = project.techStack.slice(0, MAX_BADGES);
   const extraCount = project.techStack.length - shownTech.length;
   const detailHref = `/projects/${project.slug}`;
+  const tone = TONES[index % TONES.length];
 
   return (
-    <article className="card h-100 project-card">
+    <article className={`card h-100 project-card project-card--${tone}`}>
       <Link
         href={detailHref}
         className="project-card-media ratio ratio-16x9"

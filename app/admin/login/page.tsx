@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function AdminLoginPage() {
   return (
-    <main className="admin-login-page">
+    <main className="admin-login-page" data-bs-theme="dark">
       <div className="admin-login-card card">
         <div className="card-body p-4 p-md-5">
           <p className="eyebrow mb-1">Asad Khan — Portfolio</p>

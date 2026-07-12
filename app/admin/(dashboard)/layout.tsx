@@ -17,7 +17,7 @@ export default async function AdminLayout({
   const initial = name.charAt(0).toUpperCase();
 
   return (
-    <div className="admin-shell">
+    <div className="admin-shell" data-bs-theme="dark">
       <aside className="admin-sidebar">
         <div className="admin-sidebar-top">
           <Link href="/admin" className="admin-brand">

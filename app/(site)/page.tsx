@@ -118,9 +118,9 @@ export default async function HomePage() {
         </div>
         {featured.length > 0 ? (
           <div className="row g-4">
-            {featured.map((project) => (
+            {featured.map((project, index) => (
               <div className="col-12 col-md-6 col-lg-4" key={project._id}>
-                <ProjectCard project={project} />
+                <ProjectCard project={project} index={index} />
               </div>
             ))}
           </div>

@@ -27,7 +27,7 @@
   background: linear-gradient(
     to bottom,
     var(--accent),
-    rgba(34, 211, 238, 0.35)
+    color-mix(in srgb, var(--accent-2) 35%, transparent)
   );
   border-radius: 1px;
 }
@@ -50,7 +50,7 @@
   border-radius: 50%;
   background: var(--bg);
   border: 3px solid var(--accent);
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.18);
+  box-shadow: 0 0 0 4px rgba(109, 40, 217, 0.15);
 }
 
 .timeline-dates {

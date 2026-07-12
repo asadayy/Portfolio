@@ -1,18 +1,40 @@
-/* Project card (used on home + projects grid) */
+/* Project card (used on home + projects grid) — multicolor per index */
 
 .project-card {
+  --tone: var(--c-blue);
   overflow: hidden;
-  transition: transform 0.18s ease, border-color 0.18s ease;
+  border-top: 3px solid var(--tone);
+  transition: transform 0.18s ease, border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.project-card--blue {
+  --tone: var(--c-blue);
+}
+.project-card--violet {
+  --tone: var(--c-violet);
+}
+.project-card--emerald {
+  --tone: var(--c-emerald);
+}
+.project-card--pink {
+  --tone: var(--c-pink);
+}
+.project-card--amber {
+  --tone: var(--c-amber);
+}
+.project-card--cyan {
+  --tone: var(--c-cyan);
 }
 
 .project-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(99, 102, 241, 0.55);
+  box-shadow: 0 16px 32px rgba(23, 20, 58, 0.12);
 }
 
 .project-card-media {
   display: block;
-  background: var(--surface-raised);
+  background: color-mix(in srgb, var(--tone) 8%, var(--surface-raised));
 }
 
 .project-card-img {
@@ -27,10 +49,10 @@
   font-weight: 800;
   background: linear-gradient(
     135deg,
-    rgba(99, 102, 241, 0.25),
-    rgba(34, 211, 238, 0.12)
+    color-mix(in srgb, var(--tone) 20%, transparent),
+    color-mix(in srgb, var(--tone) 6%, transparent)
   );
-  color: var(--accent-strong);
+  color: var(--tone);
 }
 
 .project-card-title-link {
@@ -40,7 +62,7 @@
 
 .project-card-title-link:hover,
 .project-card-title-link:focus-visible {
-  color: var(--accent-2);
+  color: var(--tone);
 }
 
 .project-card-actions {
@@ -52,7 +74,7 @@
   font-weight: 600;
   font-size: 0.92rem;
   text-decoration: none;
-  color: var(--accent-strong);
+  color: var(--tone);
   display: inline-flex;
   align-items: center;
   margin-right: auto;
@@ -60,7 +82,7 @@
 
 .project-card-more:hover,
 .project-card-more:focus-visible {
-  color: var(--accent-2);
+  filter: brightness(0.85);
 }
 
 .project-card-ext {
@@ -70,5 +92,5 @@
 
 .project-card-ext:hover,
 .project-card-ext:focus-visible {
-  color: var(--accent-2);
+  color: var(--tone);
 }
