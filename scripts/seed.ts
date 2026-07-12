@@ -17,6 +17,8 @@ config({ path: ".env.local" });
 config();
 
 const siteContent: Array<{ key: string; value: string }> = [
+  { key: "hero_name", value: "Asad Khan" },
+  { key: "hero_image", value: "" },
   {
     key: "hero_headline",
     value: "Full-Stack Developer Building AI-Integrated Web Applications",

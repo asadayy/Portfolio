@@ -5,10 +5,16 @@ import { useMemo, useState } from "react";
 
 import { adminFetch } from "@/lib/admin-client";
 import Toast, { type ToastMessage } from "@/components/admin/Toast";
+import ImageUploadField from "@/components/admin/ImageUploadField";
 
 interface ContentItem {
   key: string;
   value: string;
+}
+
+// Keys ending in _image get an image uploader instead of a text field.
+function isImageKey(key: string): boolean {
+  return key.endsWith("_image");
 }
 
 function prettifyKey(key: string): string {
@@ -69,26 +75,48 @@ export default function ContentEditor({ items }: { items: ContentItem[] }) {
       </header>
 
       <form className="admin-editor" onSubmit={handleSave}>
-        {items.map((item) => (
-          <div className="mb-3" key={item.key}>
-            <label htmlFor={`content-${item.key}`} className="form-label">
-              {prettifyKey(item.key)}{" "}
+        {items.map((item) => {
+          const dirty = values[item.key] !== initial[item.key];
+          const keyTag = (
+            <>
               <code className="small text-secondary">{item.key}</code>
-              {values[item.key] !== initial[item.key] && (
+              {dirty && (
                 <span className="badge text-bg-warning ms-2">unsaved</span>
               )}
-            </label>
-            <textarea
-              id={`content-${item.key}`}
-              className="form-control"
-              rows={rowsFor(values[item.key] ?? "")}
-              value={values[item.key] ?? ""}
-              onChange={(event) =>
-                setValues({ ...values, [item.key]: event.target.value })
-              }
-            />
-          </div>
-        ))}
+            </>
+          );
+
+          if (isImageKey(item.key)) {
+            return (
+              <div className="mb-4" key={item.key}>
+                <ImageUploadField
+                  id={`content-${item.key}`}
+                  label={prettifyKey(item.key)}
+                  value={values[item.key] ?? ""}
+                  onChange={(url) => setValues({ ...values, [item.key]: url })}
+                />
+                <div className="form-text mt-1">{keyTag}</div>
+              </div>
+            );
+          }
+
+          return (
+            <div className="mb-3" key={item.key}>
+              <label htmlFor={`content-${item.key}`} className="form-label">
+                {prettifyKey(item.key)} {keyTag}
+              </label>
+              <textarea
+                id={`content-${item.key}`}
+                className="form-control"
+                rows={rowsFor(values[item.key] ?? "")}
+                value={values[item.key] ?? ""}
+                onChange={(event) =>
+                  setValues({ ...values, [item.key]: event.target.value })
+                }
+              />
+            </div>
+          );
+        })}
 
         <div className="d-flex align-items-center gap-3 mt-4">
           <button
