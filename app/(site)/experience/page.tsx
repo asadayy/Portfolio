@@ -10,11 +10,11 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Experience",
   description:
-    "Work experience of Asad Khan: full-stack development at NEPRA (Pakistan's national power regulator) and PMAS Arid Agriculture University.",
+    "Work experience of Asad E Bukhari: full-stack development at NEPRA (Pakistan's national power regulator) and PMAS Arid Agriculture University.",
   openGraph: {
-    title: "Experience — Asad Khan",
+    title: "Experience — Asad E Bukhari",
     description:
-      "Work experience of Asad Khan: full-stack development at NEPRA and PMAS Arid Agriculture University.",
+      "Work experience of Asad E Bukhari: full-stack development at NEPRA and PMAS Arid Agriculture University.",
     images: ["/og-default.png"],
   },
 };

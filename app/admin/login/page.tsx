@@ -14,7 +14,7 @@ export default function AdminLoginPage() {
     <main className="admin-login-page" data-bs-theme="dark">
       <div className="admin-login-card card">
         <div className="card-body p-4 p-md-5">
-          <p className="eyebrow mb-1">Asad Khan — Portfolio</p>
+          <p className="eyebrow mb-1">Asad E Bukhari — Portfolio</p>
           <h1 className="h4 fw-bold mb-4">Admin sign in</h1>
           <Suspense fallback={null}>
             <LoginForm />

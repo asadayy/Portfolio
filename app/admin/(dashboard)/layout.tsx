@@ -22,7 +22,7 @@ export default async function AdminLayout({
         <div className="admin-sidebar-top">
           <Link href="/admin" className="admin-brand">
             <span className="admin-brand-mark" aria-hidden>
-              AK
+              AB
             </span>
             <span className="admin-brand-text">
               <span className="admin-brand-title">Studio</span>

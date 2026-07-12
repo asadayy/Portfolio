@@ -24,12 +24,12 @@ export async function generateMetadata(): Promise<Metadata> {
   const content = await getSiteContent();
   const description =
     content.hero_subtext ??
-    "Portfolio of Asad Khan, full-stack developer building AI-integrated web applications.";
+    "Portfolio of Asad E Bukhari, full-stack developer building AI-integrated web applications.";
   return {
-    title: { absolute: "Asad Khan — Full-Stack Developer" },
+    title: { absolute: "Asad E Bukhari — Full-Stack Developer" },
     description,
     openGraph: {
-      title: "Asad Khan — Full-Stack Developer",
+      title: "Asad E Bukhari — Full-Stack Developer",
       description,
       type: "website",
       images: ["/og-default.png"],
@@ -55,7 +55,7 @@ export default async function HomePage() {
                 {content.hero_image ? (
                   <Image
                     src={content.hero_image}
-                    alt={content.hero_name ?? "Asad Khan"}
+                    alt={content.hero_name ?? "Asad E Bukhari"}
                     fill
                     priority
                     sizes="(max-width: 991px) 70vw, 380px"
@@ -63,7 +63,7 @@ export default async function HomePage() {
                   />
                 ) : (
                   <span className="hero-photo-placeholder" aria-hidden>
-                    {(content.hero_name ?? "AK").charAt(0)}
+                    {(content.hero_name ?? "AB").charAt(0)}
                   </span>
                 )}
               </div>
@@ -71,7 +71,7 @@ export default async function HomePage() {
 
             <div className="col-12 col-lg-6 hero-copy text-center">
               <span className="hero-eyebrow">Hello, I&apos;m</span>
-              <h1 className="hero-title">{content.hero_name ?? "Asad Khan"}</h1>
+              <h1 className="hero-title">{content.hero_name ?? "Asad E Bukhari"}</h1>
               {content.hero_headline && (
                 <p className="hero-role">{content.hero_headline}</p>
               )}

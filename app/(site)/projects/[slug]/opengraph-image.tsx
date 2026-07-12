@@ -4,7 +4,7 @@ import { ImageResponse } from "next/og";
 // on Windows (ERR_INVALID_URL), and edge is also faster on Vercel. Edge
 // can't run Mongoose, so project data comes from /api/og/[slug] over HTTP.
 export const runtime = "edge";
-export const alt = "Project case study — Asad Khan";
+export const alt = "Project case study — Asad E Bukhari";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -33,7 +33,7 @@ export default async function OpengraphImage({
     // fall through to the branded fallback card
   }
 
-  const title = data?.title ?? "Asad Khan";
+  const title = data?.title ?? "Asad E Bukhari";
   const description =
     data?.shortDescription.slice(0, 140) ??
     "Full-Stack Developer — AI-Integrated Web Applications";
@@ -64,7 +64,7 @@ export default async function OpengraphImage({
             fontWeight: 600,
           }}
         >
-          Asad Khan — Full-Stack Developer
+          Asad E Bukhari — Full-Stack Developer
         </div>
         <div
           style={{

@@ -9,11 +9,11 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Projects",
   description:
-    "Full project archive: AI-integrated platforms, enterprise systems, e-commerce, and NLP tools built by Asad Khan.",
+    "Full project archive: AI-integrated platforms, enterprise systems, e-commerce, and NLP tools built by Asad E Bukhari.",
   openGraph: {
-    title: "Projects — Asad Khan",
+    title: "Projects — Asad E Bukhari",
     description:
-      "Full project archive: AI-integrated platforms, enterprise systems, e-commerce, and NLP tools built by Asad Khan.",
+      "Full project archive: AI-integrated platforms, enterprise systems, e-commerce, and NLP tools built by Asad E Bukhari.",
     images: ["/og-default.png"],
   },
 };

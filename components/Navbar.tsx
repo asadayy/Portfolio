@@ -30,7 +30,7 @@ export default function Navbar() {
           className="navbar-brand fw-bold"
           onClick={() => setOpen(false)}
         >
-          Asad Khan<span className="brand-dot">.</span>
+          Asad E Bukhari<span className="brand-dot">.</span>
         </Link>
         <button
           type="button"

@@ -17,7 +17,7 @@ config({ path: ".env.local" });
 config();
 
 const siteContent: Array<{ key: string; value: string }> = [
-  { key: "hero_name", value: "Asad Khan" },
+  { key: "hero_name", value: "Asad E Bukhari" },
   { key: "hero_image", value: "" },
   {
     key: "hero_headline",
@@ -31,7 +31,7 @@ const siteContent: Array<{ key: string; value: string }> = [
   {
     key: "about_text",
     value:
-      "I'm Asad Khan, a full-stack developer who enjoys taking products from idea to production — from AI-powered planning tools to enterprise systems for Pakistan's national power regulator. I work across the stack with React, Next.js, Node.js, and MongoDB, and I have a particular interest in integrating LLMs (Gemini, LLaMA) into real-world applications.",
+      "I'm Asad E Bukhari, a full-stack developer who enjoys taking products from idea to production — from AI-powered planning tools to enterprise systems for Pakistan's national power regulator. I work across the stack with React, Next.js, Node.js, and MongoDB, and I have a particular interest in integrating LLMs (Gemini, LLaMA) into real-world applications.",
   },
   { key: "contact_email", value: "asademuhammad96@gmail.com" },
   { key: "github_url", value: "https://github.com/TODO-your-username" },

@@ -14,7 +14,7 @@ export default async function Footer() {
         <div className="row gy-4">
           <div className="col-12 col-md-5">
             <p className="footer-brand fw-bold mb-2">
-              Asad Khan<span className="brand-dot">.</span>
+              Asad E Bukhari<span className="brand-dot">.</span>
             </p>
             <p className="text-secondary mb-0 footer-tagline">
               Full-stack developer building AI-integrated web applications.
@@ -74,7 +74,7 @@ export default async function Footer() {
         </div>
         <div className="footer-bottom d-flex flex-wrap justify-content-between gap-2 pt-4 mt-4">
           <span className="text-secondary small">
-            © {year} Asad Khan. All rights reserved.
+            © {year} Asad E Bukhari. All rights reserved.
           </span>
           <span className="text-secondary small">
             Built with Next.js, Bootstrap &amp; MongoDB

@@ -25,11 +25,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.SITE_URL ?? "http://localhost:3000"),
   title: {
-    default: "Asad Khan — Full-Stack Developer",
-    template: "%s — Asad Khan",
+    default: "Asad E Bukhari — Full-Stack Developer",
+    template: "%s — Asad E Bukhari",
   },
   description:
-    "Portfolio of Asad Khan, a full-stack developer building AI-integrated web applications with React, Next.js, and Node.js.",
+    "Portfolio of Asad E Bukhari, a full-stack developer building AI-integrated web applications with React, Next.js, and Node.js.",
   openGraph: {
     images: ["/og-default.png"],
   },

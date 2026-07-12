@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: project.title,
     description: project.shortDescription,
     openGraph: {
-      title: `${project.title} — Asad Khan`,
+      title: `${project.title} — Asad E Bukhari`,
       description: project.shortDescription,
       type: "article",
       // og:image comes from the generated opengraph-image.tsx branded card.

@@ -15,11 +15,11 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Asad Khan — email, GitHub, and LinkedIn. Open to full-stack and AI-integration opportunities.",
+    "Get in touch with Asad E Bukhari — email, GitHub, and LinkedIn. Open to full-stack and AI-integration opportunities.",
   openGraph: {
-    title: "Contact — Asad Khan",
+    title: "Contact — Asad E Bukhari",
     description:
-      "Get in touch with Asad Khan — email, GitHub, and LinkedIn.",
+      "Get in touch with Asad E Bukhari — email, GitHub, and LinkedIn.",
     images: ["/og-default.png"],
   },
 };

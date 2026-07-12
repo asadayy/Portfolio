@@ -1,4 +1,4 @@
-# Asad Khan — Portfolio + Admin CMS
+# Asad E Bukhari — Portfolio + Admin CMS
 
 Personal portfolio for a full-stack developer with an integrated admin
 dashboard: every piece of site content — projects, work experience, tech
