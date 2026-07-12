@@ -74,7 +74,7 @@
 .admin-brand-title {
   font-weight: 700;
   font-size: 1rem;
-  color: var(--bs-emphasis-color);
+  color: #f8fafc;
 }
 
 .admin-brand-sub {
@@ -120,7 +120,7 @@
 .admin-user-name {
   font-weight: 600;
   font-size: 0.9rem;
-  color: var(--bs-emphasis-color);
+  color: #f8fafc;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -169,7 +169,7 @@
 
 .admin-nav-link:hover,
 .admin-nav-link:focus-visible {
-  color: var(--bs-emphasis-color);
+  color: #f8fafc;
   background: var(--surface-raised);
 }
 
@@ -224,7 +224,7 @@
 
 .admin-side-action:hover,
 .admin-side-action:focus-visible {
-  color: var(--bs-emphasis-color);
+  color: #f8fafc;
   border-color: rgba(99, 102, 241, 0.55);
   background: var(--surface-raised);
 }
@@ -284,7 +284,9 @@
   font-weight: 800;
   letter-spacing: -0.02em;
   margin: 0 0 0.35rem;
-  color: var(--bs-emphasis-color);
+  /* Admin is always dark — use an explicit light color so the title can
+     never resolve dark-on-dark via cross-theme variable cascade. */
+  color: #f8fafc;
 }
 
 .admin-page-lead {
@@ -443,7 +445,7 @@
 
 .admin-stat-label {
   font-weight: 600;
-  color: var(--bs-emphasis-color);
+  color: #f8fafc;
   position: relative;
   z-index: 1;
 }
@@ -509,7 +511,7 @@
 
 .admin-quick-label {
   font-weight: 600;
-  color: var(--bs-emphasis-color);
+  color: #f8fafc;
 }
 
 .admin-quick-sub {
