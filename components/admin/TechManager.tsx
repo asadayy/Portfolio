@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import type { TechStackItemDTO } from "@/lib/serialize";
-import { TECH_CATEGORIES } from "@/models/TechStackItem";
+import { TECH_CATEGORIES } from "@/lib/constants";
 import { adminFetch } from "@/lib/admin-client";
 import ConfirmModal from "@/components/admin/ConfirmModal";
 import Toast, { type ToastMessage } from "@/components/admin/Toast";

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { TECH_CATEGORIES } from "@/models/TechStackItem";
+import { TECH_CATEGORIES } from "@/lib/constants";
 
 /** Zod schemas shared by all mutating admin route handlers. */
 

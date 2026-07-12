@@ -3,10 +3,8 @@ import { cache } from "react";
 import dbConnect from "@/lib/db";
 import Project from "@/models/Project";
 import Experience from "@/models/Experience";
-import TechStackItem, {
-  TECH_CATEGORIES,
-  type TechCategory,
-} from "@/models/TechStackItem";
+import TechStackItem from "@/models/TechStackItem";
+import { TECH_CATEGORIES, type TechCategory } from "@/lib/constants";
 import SiteContent from "@/models/SiteContent";
 import {
   serialize,

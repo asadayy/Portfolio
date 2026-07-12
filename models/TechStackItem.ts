@@ -1,14 +1,8 @@
 import { Schema, model, models, type Model } from "mongoose";
 
-export const TECH_CATEGORIES = [
-  "Frontend",
-  "Backend",
-  "Database",
-  "AI/ML",
-  "Tools",
-] as const;
+import { TECH_CATEGORIES, type TechCategory } from "@/lib/constants";
 
-export type TechCategory = (typeof TECH_CATEGORIES)[number];
+export { TECH_CATEGORIES, type TechCategory };
 
 export interface ITechStackItem {
   name: string;
