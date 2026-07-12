@@ -48,26 +48,60 @@ export default async function HomePage() {
     <main>
       {/* Hero */}
       <section className="hero">
-        <div className="hero-glow" aria-hidden />
-        <div className="container position-relative">
-          <div className="row align-items-center g-5">
-            <div className="col-lg-7 hero-copy">
-              <span className="eyebrow">Hi, I&apos;m</span>
-              <h1 className="hero-title">
-                {content.hero_name ?? "Asad Khan"}
-              </h1>
+        <div className="container">
+          <div className="row align-items-center justify-content-center g-4 g-lg-5">
+            <div className="col-11 col-sm-8 col-md-6 col-lg-5 hero-photo-col">
+              <div className="hero-photo">
+                {content.hero_image ? (
+                  <Image
+                    src={content.hero_image}
+                    alt={content.hero_name ?? "Asad Khan"}
+                    fill
+                    priority
+                    sizes="(max-width: 991px) 70vw, 380px"
+                    className="hero-photo-img"
+                  />
+                ) : (
+                  <span className="hero-photo-placeholder" aria-hidden>
+                    {(content.hero_name ?? "AK").charAt(0)}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <div className="col-12 col-lg-6 hero-copy text-center">
+              <span className="hero-eyebrow">Hello, I&apos;m</span>
+              <h1 className="hero-title">{content.hero_name ?? "Asad Khan"}</h1>
               {content.hero_headline && (
-                <p className="hero-role">
-                  <mark>{content.hero_headline}</mark>
-                </p>
+                <p className="hero-role">{content.hero_headline}</p>
               )}
               {content.hero_subtext && (
-                <p className="hero-subtext text-secondary">
-                  {content.hero_subtext}
-                </p>
+                <p className="hero-subtext">{content.hero_subtext}</p>
               )}
 
-              <ul className="hero-socials list-unstyled" aria-label="Social links">
+              <div className="hero-actions">
+                {content.resume_url && (
+                  <a
+                    href={content.resume_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-outline-primary hero-btn d-inline-flex align-items-center gap-2"
+                  >
+                    <DownloadIcon size={15} /> Download CV
+                  </a>
+                )}
+                <Link
+                  href="/contact"
+                  className="btn btn-primary hero-btn d-inline-flex align-items-center gap-2"
+                >
+                  <MailIcon size={15} /> Contact Info
+                </Link>
+              </div>
+
+              <ul
+                className="hero-socials list-unstyled"
+                aria-label="Social links"
+              >
                 {content.linkedin_url && (
                   <li>
                     <a
@@ -77,7 +111,7 @@ export default async function HomePage() {
                       className="hero-social"
                       aria-label="LinkedIn"
                     >
-                      <LinkedInIcon size={20} />
+                      <LinkedInIcon size={18} />
                     </a>
                   </li>
                 )}
@@ -90,7 +124,7 @@ export default async function HomePage() {
                       className="hero-social"
                       aria-label="GitHub"
                     >
-                      <GitHubIcon size={20} />
+                      <GitHubIcon size={18} />
                     </a>
                   </li>
                 )}
@@ -101,43 +135,11 @@ export default async function HomePage() {
                       className="hero-social"
                       aria-label="Email"
                     >
-                      <MailIcon size={20} />
+                      <MailIcon size={18} />
                     </a>
                   </li>
                 )}
               </ul>
-
-              {content.resume_url && (
-                <a
-                  href={content.resume_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-primary btn-lg hero-resume d-inline-flex align-items-center gap-2"
-                >
-                  <DownloadIcon size={16} /> Download Resume
-                </a>
-              )}
-            </div>
-
-            <div className="col-lg-5 hero-media">
-              <div className="hero-portrait">
-                <div className="hero-portrait-inner">
-                  {content.hero_image ? (
-                    <Image
-                      src={content.hero_image}
-                      alt={content.hero_name ?? "Asad Khan"}
-                      fill
-                      priority
-                      sizes="(max-width: 991px) 80vw, 420px"
-                      className="hero-portrait-img"
-                    />
-                  ) : (
-                    <span className="hero-portrait-placeholder" aria-hidden>
-                      {(content.hero_name ?? "AK").charAt(0)}
-                    </span>
-                  )}
-                </div>
-              </div>
             </div>
           </div>
         </div>
