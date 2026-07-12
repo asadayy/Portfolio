@@ -1,78 +1,50 @@
-/* Tech stack grid grouped by category — multicolor per category */
+/* Tech stack grid — minimal monochrome groups with invert-on-hover chips */
 
 .tech-grid .tech-group {
-  --tone: var(--c-blue);
-  position: relative;
-  overflow: hidden;
-  border-top: 3px solid var(--tone);
-  transition: transform 0.16s ease, box-shadow 0.16s ease;
-}
-
-.tech-grid .tech-group::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    16rem 10rem at 100% 0%,
-    color-mix(in srgb, var(--tone) 12%, transparent),
-    transparent 65%
-  );
-  pointer-events: none;
-}
-
-.tech-grid .tech-group:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 14px 30px rgba(23, 20, 58, 0.1);
-}
-
-.tech-grid .tech-group--blue {
-  --tone: var(--c-blue);
-}
-.tech-grid .tech-group--violet {
-  --tone: var(--c-violet);
-}
-.tech-grid .tech-group--emerald {
-  --tone: var(--c-emerald);
-}
-.tech-grid .tech-group--pink {
-  --tone: var(--c-pink);
-}
-.tech-grid .tech-group--amber {
-  --tone: var(--c-amber);
+  border-top: 2px solid var(--text-strong);
+  padding-top: 1.05rem;
+  height: 100%;
 }
 
 .tech-grid .tech-group-title {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 0.75rem;
-  color: var(--tone);
-  margin-bottom: 0.9rem;
-  position: relative;
+  color: var(--text-strong);
+  margin-bottom: 1rem;
 }
 
-.tech-grid .tech-group-title::before {
-  content: "";
-  width: 0.55rem;
-  height: 0.55rem;
-  border-radius: 50%;
-  background: var(--tone);
+.tech-grid .tech-count {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
 }
 
-/* Badges inherit the category tone */
 .tech-grid .tech-badge {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
   font-size: 0.85rem;
   font-weight: 500;
-  padding: 0.45rem 0.7rem;
-  color: var(--tone);
-  background: color-mix(in srgb, var(--tone) 10%, transparent);
-  border: 1px solid color-mix(in srgb, var(--tone) 28%, transparent);
-  position: relative;
+  padding: 0.42rem 0.85rem;
+  border-radius: 2rem;
+  color: #3f3f46;
+  background: #fff;
+  border: 1px solid var(--line);
+  transition: background-color 0.15s ease, color 0.15s ease,
+    border-color 0.15s ease;
+  cursor: default;
+}
+
+.tech-grid .tech-badge:hover {
+  background: var(--text-strong);
+  color: #fff;
+  border-color: var(--text-strong);
 }
 
 .tech-grid .tech-badge-icon {

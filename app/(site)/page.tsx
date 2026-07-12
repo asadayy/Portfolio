@@ -51,27 +51,35 @@ export default async function HomePage() {
         <div className="container">
           <div className="row align-items-center justify-content-center g-4 g-lg-5">
             <div className="col-11 col-sm-8 col-md-6 col-lg-5 hero-photo-col">
-              <div className="hero-photo">
-                {content.hero_image ? (
-                  <Image
-                    src={content.hero_image}
-                    alt={content.hero_name ?? "Asad E Bukhari"}
-                    fill
-                    priority
-                    sizes="(max-width: 991px) 70vw, 380px"
-                    className="hero-photo-img"
-                  />
-                ) : (
-                  <span className="hero-photo-placeholder" aria-hidden>
-                    {(content.hero_name ?? "AB").charAt(0)}
-                  </span>
-                )}
+              <div className="hero-photo-frame">
+                <div className="hero-photo">
+                  {content.hero_image ? (
+                    <Image
+                      src={content.hero_image}
+                      alt={content.hero_name ?? "Asad E Bukhari"}
+                      fill
+                      priority
+                      sizes="(max-width: 991px) 70vw, 380px"
+                      className="hero-photo-img"
+                    />
+                  ) : (
+                    <span className="hero-photo-placeholder" aria-hidden>
+                      {(content.hero_name ?? "AB").charAt(0)}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
 
             <div className="col-12 col-lg-6 hero-copy text-center">
+              <span className="hero-status">
+                <span className="hero-status-dot" aria-hidden />
+                Open to opportunities
+              </span>
               <span className="hero-eyebrow">Hello, I&apos;m</span>
-              <h1 className="hero-title">{content.hero_name ?? "Asad E Bukhari"}</h1>
+              <h1 className="hero-title">
+                {content.hero_name ?? "Asad E Bukhari"}
+              </h1>
               {content.hero_headline && (
                 <p className="hero-role">{content.hero_headline}</p>
               )}
@@ -143,67 +151,91 @@ export default async function HomePage() {
             </div>
           </div>
         </div>
+
+        <a href="#about" className="hero-scroll" aria-label="Scroll down">
+          Scroll
+          <span className="hero-scroll-line" aria-hidden />
+        </a>
       </section>
 
       {/* About */}
       {content.about_text && (
-        <section className="container home-section" aria-labelledby="about-heading">
-          <span className="eyebrow">About</span>
-          <h2 id="about-heading" className="section-title">
-            A bit about me
-          </h2>
-          <p className="about-text text-secondary">{content.about_text}</p>
+        <section
+          id="about"
+          className="container home-section"
+          aria-labelledby="about-heading"
+        >
+          <div className="about-grid">
+            <header className="section-head">
+              <span className="section-kicker">
+                <span className="section-num">01</span>About
+              </span>
+              <h2 id="about-heading" className="section-title">
+                A bit about me
+              </h2>
+            </header>
+            <p className="about-text">{content.about_text}</p>
+          </div>
         </section>
       )}
 
       {/* Featured projects */}
-      <section className="container home-section" aria-labelledby="featured-heading">
-        <div className="d-flex flex-wrap align-items-end justify-content-between gap-2 mb-4">
-          <div>
-            <span className="eyebrow">Selected work</span>
-            <h2 id="featured-heading" className="section-title mb-0">
-              Featured projects
-            </h2>
+      <section className="home-band" aria-labelledby="featured-heading">
+        <div className="container">
+          <div className="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-4">
+            <header className="section-head mb-0">
+              <span className="section-kicker">
+                <span className="section-num">02</span>Selected work
+              </span>
+              <h2 id="featured-heading" className="section-title">
+                Featured projects
+              </h2>
+            </header>
+            <Link href="/projects" className="section-link">
+              View all projects <ArrowRightIcon size={14} className="ms-1" />
+            </Link>
           </div>
-          <Link href="/projects" className="section-link">
-            View all projects <ArrowRightIcon size={14} className="ms-1" />
-          </Link>
+          {featured.length > 0 ? (
+            <div className="row g-4">
+              {featured.map((project, index) => (
+                <div className="col-12 col-md-6 col-lg-4" key={project._id}>
+                  <ProjectCard project={project} index={index} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-secondary">Featured projects coming soon.</p>
+          )}
         </div>
-        {featured.length > 0 ? (
-          <div className="row g-4">
-            {featured.map((project, index) => (
-              <div className="col-12 col-md-6 col-lg-4" key={project._id}>
-                <ProjectCard project={project} index={index} />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-secondary">Featured projects coming soon.</p>
-        )}
       </section>
 
       {/* Tech stack */}
       <section className="container home-section" aria-labelledby="tech-heading">
-        <span className="eyebrow">Toolbox</span>
-        <h2 id="tech-heading" className="section-title">
-          Tech I work with
-        </h2>
+        <header className="section-head">
+          <span className="section-kicker">
+            <span className="section-num">03</span>Toolbox
+          </span>
+          <h2 id="tech-heading" className="section-title">
+            Tech I work with
+          </h2>
+        </header>
         <TechGrid groups={techGroups} />
       </section>
 
       {/* CTA */}
       <section className="container home-section pb-5">
         <div className="cta-band text-center">
-          <h2 className="h3 fw-bold mb-2">Want the full story?</h2>
-          <p className="text-secondary mb-4">
+          <span className="cta-kicker">Next step</span>
+          <h2 className="cta-title">Want the full story?</h2>
+          <p className="cta-text">
             Browse the complete project archive, or get in touch — I&apos;m open
             to interesting problems.
           </p>
           <div className="d-flex flex-wrap justify-content-center gap-3">
-            <Link href="/projects" className="btn btn-primary">
+            <Link href="/projects" className="btn cta-btn-light">
               Explore projects
             </Link>
-            <Link href="/contact" className="btn btn-outline-primary">
+            <Link href="/contact" className="btn cta-btn-ghost">
               Contact me
             </Link>
           </div>

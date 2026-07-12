@@ -9,7 +9,6 @@ const LINKS = [
   { href: "/", label: "Home" },
   { href: "/projects", label: "Projects" },
   { href: "/experience", label: "Experience" },
-  { href: "/contact", label: "Contact" },
 ];
 
 export default function Navbar() {
@@ -46,7 +45,7 @@ export default function Navbar() {
           id="site-nav"
           className={`collapse navbar-collapse${open ? " show" : ""}`}
         >
-          <ul className="navbar-nav ms-auto mb-2 mb-md-0">
+          <ul className="navbar-nav ms-auto mb-2 mb-md-0 align-items-md-center">
             {LINKS.map((link) => (
               <li className="nav-item" key={link.href}>
                 <Link
@@ -59,6 +58,16 @@ export default function Navbar() {
                 </Link>
               </li>
             ))}
+            <li className="nav-item ms-md-2 mt-2 mt-md-0">
+              <Link
+                href="/contact"
+                className="btn btn-primary btn-sm navbar-cta"
+                aria-current={isActive("/contact") ? "page" : undefined}
+                onClick={() => setOpen(false)}
+              >
+                Contact
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
