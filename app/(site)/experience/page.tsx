@@ -4,6 +4,7 @@ import { getExperiences } from "@/lib/data";
 import { formatDateRange } from "@/lib/format";
 import Markdown from "@/components/Markdown";
 import "@/styles/experience.css";
+import "@/styles/timeline.css";
 
 export const revalidate = 3600;
 

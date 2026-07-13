@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { getActivities } from "@/lib/data";
 import Markdown from "@/components/Markdown";
 import "@/styles/activities.css";
+import "@/styles/timeline.css";
 
 export const revalidate = 3600;
 
@@ -32,18 +33,19 @@ export default async function ActivitiesPage() {
       </header>
 
       {activities.length > 0 ? (
-        <div className="activities-grid">
+        <ol className="timeline list-unstyled mt-4">
           {activities.map((entry) => (
-            <article className="card activity-card" key={entry._id}>
-              <div className="card-body">
-                <h2 className="h6 fw-bold activity-title">{entry.title}</h2>
-                <div className="activity-body">
+            <li className="timeline-item" key={entry._id}>
+              <span className="timeline-marker" aria-hidden />
+              <article className="card timeline-card">
+                <div className="card-body">
+                  <h2 className="h5 fw-bold mb-2">{entry.title}</h2>
                   <Markdown>{entry.description}</Markdown>
                 </div>
-              </div>
-            </article>
+              </article>
+            </li>
           ))}
-        </div>
+        </ol>
       ) : (
         <p className="text-secondary mt-4">No activities yet.</p>
       )}
