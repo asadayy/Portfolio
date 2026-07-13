@@ -16,7 +16,6 @@ import Activity from "../models/Activity";
 import TechStackItem from "../models/TechStackItem";
 import SiteContent from "../models/SiteContent";
 
-config({ path: ".env.local" });
 config();
 
 const siteContent: Array<{ key: string; value: string }> = [
@@ -388,9 +387,10 @@ async function seed() {
     tally(!exists);
   }
 
+  // Match on organization/institution only — titles are freely edited in the
+  // admin, and a stricter match would re-insert edited entries as duplicates.
   for (const experience of experiences) {
     const exists = await Experience.exists({
-      role: experience.role,
       organization: experience.organization,
     });
     if (!exists) await Experience.create(experience);
@@ -399,7 +399,6 @@ async function seed() {
 
   for (const entry of education) {
     const exists = await Education.exists({
-      degree: entry.degree,
       institution: entry.institution,
     });
     if (!exists) await Education.create(entry);

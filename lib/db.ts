@@ -36,7 +36,7 @@ export default async function dbConnect(): Promise<typeof mongoose> {
     const uri = process.env.MONGODB_URI;
     if (!uri) {
       throw new Error(
-        "Missing MONGODB_URI environment variable — copy .env.example to .env.local and set it."
+        "Missing MONGODB_URI environment variable — create a .env file and set it (see README)."
       );
     }
     cached.promise = mongoose.connect(uri, { bufferCommands: false });

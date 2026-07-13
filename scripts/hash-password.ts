@@ -17,7 +17,7 @@ const hash = bcrypt.hashSync(password, 12);
 // hash must be escaped. Vercel's dashboard takes the raw value.
 const escaped = hash.replace(/\$/g, "\\$");
 
-console.log("\nFor .env.local (escaped for Next.js env loading):\n");
+console.log("\nFor .env (escaped for Next.js env loading):\n");
 console.log(`ADMIN_PASSWORD_HASH=${escaped}\n`);
 console.log("For the Vercel env dashboard, use the raw value:\n");
 console.log(`${hash}\n`);

@@ -16,7 +16,7 @@ Atlas.
 ```bash
 git clone <this-repo> && cd portfolio
 npm install
-cp .env.example .env.local        # then fill in the values (see below)
+# create a .env file with the variables below (git-ignored)
 npm run seed                      # idempotent — safe to run twice
 npm run dev                       # http://localhost:3000
 ```
@@ -26,7 +26,8 @@ when signed out).
 
 ## Environment variables
 
-All required variables are documented in [`.env.example`](.env.example):
+All variables live in a single git-ignored `.env` file at the project root
+(Next.js and the npm scripts load it automatically):
 
 | Variable | Purpose |
 | --- | --- |
@@ -36,6 +37,9 @@ All required variables are documented in [`.env.example`](.env.example):
 | `NEXTAUTH_SECRET` | Random secret for JWT signing: `node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"` |
 | `NEXTAUTH_URL` | `http://localhost:3000` in dev; your production URL on Vercel. |
 | `SITE_URL` | Absolute public URL used by SEO metadata, `sitemap.xml`, and `robots.txt`. |
+| `CLOUDINARY_CLOUD_NAME` | The account "Cloud name" from the top of the Cloudinary dashboard (NOT an API key's "Key Name"). |
+| `CLOUDINARY_API_KEY` | Cloudinary API key. |
+| `CLOUDINARY_API_SECRET` | Cloudinary API secret (no `$`, so no escaping needed). |
 
 ### Generating the admin password hash
 
@@ -46,7 +50,7 @@ npm run hash-password -- "your-password-here"
 The script prints **two** values:
 
 1. an **escaped** line (`ADMIN_PASSWORD_HASH=\$2a\$12\$…`) to paste into
-   `.env.local` — bcrypt hashes contain `$`, which Next.js env loading would
+   `.env` — bcrypt hashes contain `$`, which Next.js env loading would
    otherwise expand as variable references and silently corrupt the hash;
 2. the **raw** hash for the Vercel dashboard (no escaping there).
 
@@ -62,7 +66,7 @@ The script prints **two** values:
      are dynamic), or use Atlas's Vercel integration instead.
 5. **Connect** → *Drivers* → copy the connection string, replace
    `<password>`, and append the database name: `…mongodb.net/portfolio?…`.
-6. Put it in `.env.local` as `MONGODB_URI`, then run `npm run seed`.
+6. Put it in `.env` as `MONGODB_URI`, then run `npm run seed`.
 
 ## Using the admin dashboard
 
@@ -109,14 +113,8 @@ to **Cloudinary** and the hosted `secure_url` is stored in Mongo. This works
 identically in local dev and on Vercel (no writable filesystem needed). All of
 it goes through one abstraction: [`lib/storage.ts`](lib/storage.ts).
 
-Configure three env vars (see `.env.example`):
-
-```
-CLOUDINARY_CLOUD_NAME=   # the account "Cloud name" — top of the dashboard,
-                         # NOT an API key's "Key Name"
-CLOUDINARY_API_KEY=
-CLOUDINARY_API_SECRET=
-```
+Configure the three `CLOUDINARY_*` variables in `.env` (see the environment
+variables table above).
 
 `res.cloudinary.com` is whitelisted in `images.remotePatterns`
 (`next.config.mjs`) so `next/image` can optimize the delivered URLs.
@@ -134,7 +132,7 @@ default on some accounts).
 ## Deploying to Vercel
 
 1. Push the repo to GitHub and import it in Vercel.
-2. Set all env vars from `.env.example` in *Project Settings → Environment
+2. Set all env vars from the table above in *Project Settings → Environment
    Variables* (`NEXTAUTH_URL` and `SITE_URL` = your production URL; paste the
    **raw** password hash; include the three `CLOUDINARY_*` values).
 3. Make sure Atlas network access allows Vercel (step 4 above). The build
