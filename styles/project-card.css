@@ -27,6 +27,10 @@
   top: 0.8rem;
   left: 0.8rem;
   z-index: 2;
+  /* Bootstrap's .ratio > * stretches children to 100% × 100%; undo that so
+     the chip stays a small pill instead of covering the media area. */
+  width: max-content;
+  height: max-content;
   background: #fff;
   border: 1px solid var(--line);
   border-radius: 2rem;
