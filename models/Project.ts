@@ -5,6 +5,9 @@ export interface IProjectMedia {
   url: string;
   /** Cloudinary public_id, kept so the asset can be managed later. */
   publicId?: string;
+  /** Intrinsic pixel dimensions (from Cloudinary) — drive gallery tile ratios. */
+  width?: number;
+  height?: number;
 }
 
 export interface IProject {
@@ -35,6 +38,8 @@ const MediaSchema = new Schema<IProjectMedia>(
     type: { type: String, enum: ["image", "video"], required: true },
     url: { type: String, required: true, trim: true },
     publicId: { type: String, trim: true },
+    width: { type: Number, min: 1 },
+    height: { type: Number, min: 1 },
   },
   { _id: false }
 );

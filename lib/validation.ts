@@ -29,6 +29,8 @@ const mediaItemSchema = z.object({
   type: z.enum(["image", "video"]),
   url: z.string().trim().url("Each media item needs a valid URL"),
   publicId: z.string().trim().optional(),
+  width: z.number().int().positive().optional(),
+  height: z.number().int().positive().optional(),
 });
 
 export const projectSchema = z

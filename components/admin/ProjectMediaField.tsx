@@ -65,7 +65,14 @@ export default function ProjectMediaField({
     if (!uploadRes.ok || !json?.secure_url) {
       throw new Error(json?.error?.message ?? "Cloudinary upload failed.");
     }
-    return { type: kind, url: json.secure_url, publicId: json.public_id };
+    return {
+      type: kind,
+      url: json.secure_url,
+      publicId: json.public_id,
+      // Intrinsic dimensions drive the public gallery's tile aspect ratio.
+      width: typeof json.width === "number" ? json.width : undefined,
+      height: typeof json.height === "number" ? json.height : undefined,
+    };
   }
 
   async function handleFiles(event: React.ChangeEvent<HTMLInputElement>) {

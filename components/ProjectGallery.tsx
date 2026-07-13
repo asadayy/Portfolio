@@ -11,10 +11,53 @@ interface ProjectGalleryProps {
 }
 
 /**
+ * Every tile in a row shares the same height; width follows the image's
+ * device class so mobile screenshots show tall instead of being cropped
+ * into 16:9. Ratios are bucketed (not exact) so rows stay symmetric.
+ */
+type Bucket = {
+  className: string;
+  sizes: string;
+};
+
+const BUCKETS: Record<string, Bucket> = {
+  mobile: {
+    className: "detail-gallery-item--mobile",
+    sizes: "140px",
+  },
+  portrait: {
+    className: "detail-gallery-item--portrait",
+    sizes: "200px",
+  },
+  square: {
+    className: "detail-gallery-item--square",
+    sizes: "240px",
+  },
+  landscape: {
+    className: "detail-gallery-item--landscape",
+    sizes: "320px",
+  },
+  wide: {
+    className: "",
+    sizes: "(max-width: 575px) 92vw, 420px",
+  },
+};
+
+function bucketFor(item: MediaItemDTO): Bucket {
+  if (!item.width || !item.height) return BUCKETS.wide;
+  const ratio = item.width / item.height;
+  if (ratio <= 0.6) return BUCKETS.mobile; // phone screenshots (~9:19)
+  if (ratio <= 0.85) return BUCKETS.portrait; // tablet portrait (~3:4)
+  if (ratio <= 1.2) return BUCKETS.square; // app windows / square shots
+  if (ratio <= 1.55) return BUCKETS.landscape; // tablet/monitor 4:3-ish
+  return BUCKETS.wide; // laptop/desktop 16:9+
+}
+
+/**
  * Project media gallery. Images render as tap targets that open a
  * full-screen lightbox (uncropped, arrow-key navigation, Escape to close);
- * videos play inline. Tiles stay uniform 16:9 crops so the grid reads
- * cleanly regardless of source aspect ratios.
+ * videos play inline. Tile heights are uniform; tile widths follow each
+ * image's device aspect bucket.
  */
 export default function ProjectGallery({ media, title }: ProjectGalleryProps) {
   const images = media.filter((item) => item.type === "image");
@@ -75,11 +118,14 @@ export default function ProjectGallery({ media, title }: ProjectGalleryProps) {
             );
           }
           const imageIndex = images.indexOf(item);
+          const bucket = bucketFor(item);
           return (
             <button
               key={`${item.url}-${index}`}
               type="button"
-              className="detail-gallery-item detail-gallery-btn ratio ratio-16x9"
+              className={`detail-gallery-item detail-gallery-btn${
+                bucket.className ? ` ${bucket.className}` : ""
+              }`}
               onClick={() => setOpenIndex(imageIndex)}
               aria-label={`View image ${imageIndex + 1} of ${images.length} full size`}
               aria-haspopup="dialog"
@@ -89,7 +135,7 @@ export default function ProjectGallery({ media, title }: ProjectGalleryProps) {
                 alt=""
                 aria-hidden
                 fill
-                sizes="(max-width: 991px) 100vw, 420px"
+                sizes={bucket.sizes}
                 className="detail-gallery-img"
               />
               <span className="detail-gallery-zoom" aria-hidden>

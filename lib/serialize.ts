@@ -16,6 +16,9 @@ export interface MediaItemDTO {
   type: "image" | "video";
   url: string;
   publicId?: string;
+  /** Intrinsic pixel dimensions — used to pick the gallery tile ratio. */
+  width?: number;
+  height?: number;
 }
 
 export interface ProjectDTO {

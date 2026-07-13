@@ -50,17 +50,44 @@
   margin-bottom: 1.25rem;
 }
 
+/*
+ * Justified rows: every tile in a row shares --tile-h; width comes from the
+ * tile's aspect-ratio bucket (mobile 9:18, tablet 3:4 / 4:3, desktop 16:9),
+ * so phone screenshots render tall instead of being cropped into 16:9.
+ */
 .project-detail .detail-gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  --tile-h: 225px;
+  display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
 }
 
 .project-detail .detail-gallery-item {
+  position: relative;
+  flex: 0 0 auto;
+  height: var(--tile-h);
+  aspect-ratio: 16 / 9; /* default: laptop/desktop screenshots */
+  max-width: 100%;
   border: 1px solid var(--line);
   border-radius: 0.75rem;
   overflow: hidden;
   background: var(--surface-raised);
+}
+
+.project-detail .detail-gallery-item--landscape {
+  aspect-ratio: 4 / 3;
+}
+
+.project-detail .detail-gallery-item--portrait {
+  aspect-ratio: 3 / 4;
+}
+
+.project-detail .detail-gallery-item--square {
+  aspect-ratio: 1 / 1;
+}
+
+.project-detail .detail-gallery-item--mobile {
+  aspect-ratio: 9 / 18;
 }
 
 .project-detail .detail-gallery-img {
@@ -69,7 +96,9 @@
 
 /* Videos keep their own aspect ratio; span full width on their own row. */
 .project-detail .detail-gallery-item--video {
-  grid-column: 1 / -1;
+  flex: 1 1 100%;
+  height: auto;
+  aspect-ratio: auto;
   background: #000;
 }
 
@@ -79,18 +108,27 @@
   max-height: 70vh;
 }
 
+@media (max-width: 991.98px) {
+  .project-detail .detail-gallery-grid {
+    --tile-h: 195px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .project-detail .detail-gallery-grid {
+    --tile-h: 165px;
+  }
+}
+
 /* ---------- Image tiles open the lightbox ---------- */
 .project-detail .detail-gallery-btn {
   display: block;
-  width: 100%;
   padding: 0;
   cursor: zoom-in;
 }
 
-/* Bootstrap .ratio > * stretches children to 100% — pin the zoom chip. */
 .project-detail .detail-gallery-zoom {
-  top: auto;
-  left: auto;
+  position: absolute;
   right: 0.55rem;
   bottom: 0.55rem;
   width: max-content;
