@@ -1,0 +1,47 @@
+/* Education page */
+
+.education-page {
+  max-width: 820px;
+}
+
+.education-page .education-header {
+  max-width: 62ch;
+}
+
+.education-page .education-intro {
+  font-size: 1.05rem;
+}
+
+.education-list {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+.education-card {
+  border: 1px solid var(--line);
+  border-radius: 0.85rem;
+  background: var(--surface-raised);
+}
+
+.education-card .education-dates {
+  font-size: 0.88rem;
+  color: var(--accent-2);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.education-card .education-inst {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.education-card .education-grade {
+  color: var(--accent-2);
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.education-card .education-body :last-child {
+  margin-bottom: 0;
+}

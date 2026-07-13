@@ -1,0 +1,42 @@
+/* Activities page */
+
+.activities-page {
+  max-width: 900px;
+}
+
+.activities-page .activities-header {
+  max-width: 62ch;
+}
+
+.activities-page .activities-intro {
+  font-size: 1.05rem;
+}
+
+.activities-page .activities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.activities-page .activity-card {
+  border: 1px solid var(--line);
+  border-radius: 0.85rem;
+  background: var(--surface-raised);
+  height: 100%;
+}
+
+.activities-page .activity-title {
+  letter-spacing: -0.01em;
+  margin-bottom: 0.5rem;
+}
+
+/* Tighten stray paragraph margins from the markdown body inside a card. */
+.activities-page .activity-body :last-child {
+  margin-bottom: 0;
+}
+
+.activities-page .activity-body p {
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
