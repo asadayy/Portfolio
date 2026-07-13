@@ -1,23 +1,80 @@
-import { mkdir, writeFile } from "fs/promises";
-import path from "path";
+import { v2 as cloudinary } from "cloudinary";
 
 /**
- * Image storage abstraction.
+ * Media storage abstraction — Cloudinary.
  *
- * Local/dev implementation writes to /public/uploads so Next can serve the
- * files directly. Vercel's filesystem is ephemeral and read-only at runtime,
- * so FOR PRODUCTION swap the body of `saveUpload` for Vercel Blob or
- * Cloudinary (return the hosted URL) — this file is the only place that
- * needs to change. See README → "Image storage in production".
+ * Every uploaded asset (project images, hero photo, resume PDF) is streamed
+ * to Cloudinary and the hosted `secure_url` is returned and stored in Mongo.
+ * This is the ONLY place that talks to the storage provider; swap the body of
+ * `saveUpload` if you ever change providers.
+ *
+ * Requires CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET.
  */
 
-const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads");
+let configured = false;
 
+function ensureConfigured(): void {
+  if (configured) return;
+
+  const cloud_name = process.env.CLOUDINARY_CLOUD_NAME;
+  const api_key = process.env.CLOUDINARY_API_KEY;
+  const api_secret = process.env.CLOUDINARY_API_SECRET;
+
+  if (!cloud_name || !api_key || !api_secret) {
+    throw new Error(
+      "Cloudinary is not configured — set CLOUDINARY_CLOUD_NAME, " +
+        "CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET in your environment."
+    );
+  }
+
+  cloudinary.config({ cloud_name, api_key, api_secret, secure: true });
+  configured = true;
+}
+
+export type UploadResourceType = "image" | "video" | "raw" | "auto";
+
+export interface SaveUploadOptions {
+  /** Cloudinary folder; assets are grouped under here. */
+  folder?: string;
+  /** How Cloudinary should treat the asset. "auto" lets it decide. */
+  resourceType?: UploadResourceType;
+  /** Readable id (no extension); a unique suffix is appended. */
+  publicId?: string;
+}
+
+/**
+ * Streams a buffer to Cloudinary and resolves to the delivered HTTPS URL.
+ */
 export async function saveUpload(
   buffer: Buffer,
-  filename: string
+  filename: string,
+  options: SaveUploadOptions = {}
 ): Promise<string> {
-  await mkdir(UPLOAD_DIR, { recursive: true });
-  await writeFile(path.join(UPLOAD_DIR, filename), buffer);
-  return `/uploads/${filename}`;
+  ensureConfigured();
+
+  const {
+    folder = "portfolio",
+    resourceType = "auto",
+    publicId = filename.replace(/\.[^.]+$/, ""),
+  } = options;
+
+  return new Promise<string>((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        folder,
+        resource_type: resourceType,
+        public_id: publicId,
+        unique_filename: true,
+        overwrite: false,
+      },
+      (error, result) => {
+        if (error || !result) {
+          reject(error ?? new Error("Cloudinary upload failed"));
+          return;
+        }
+        resolve(result.secure_url);
+      }
+    );
+    stream.end(buffer);
+  });
 }

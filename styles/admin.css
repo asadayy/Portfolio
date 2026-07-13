@@ -638,6 +638,18 @@
   max-width: 240px;
 }
 
+.admin-file-current {
+  display: flex;
+  align-items: center;
+}
+
+.admin-file-current a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+}
+
 /* ---------- Toast region ---------- */
 .admin-toast-region {
   position: fixed;

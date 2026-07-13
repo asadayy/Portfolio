@@ -1,15 +1,27 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-import { saveUpload } from "@/lib/storage";
+import { saveUpload, type UploadResourceType } from "@/lib/storage";
 import { requireAdmin } from "@/lib/api-helpers";
 
 export const runtime = "nodejs";
 
-const MAX_BYTES = 2 * 1024 * 1024; // 2 MB
-const ALLOWED: Record<string, string> = {
-  "image/jpeg": "jpg",
-  "image/png": "png",
-  "image/webp": "webp",
+const ONE_MB = 1024 * 1024;
+// Kept under Vercel's serverless request-body limit (~4.5 MB) so uploads work
+// the same in production. Larger media would need a direct browser→Cloudinary
+// upload (see README → "Media storage").
+const MAX_BYTES = 4 * ONE_MB;
+
+type AllowedType = {
+  ext: string;
+  resourceType: UploadResourceType;
+};
+
+const ALLOWED: Record<string, AllowedType> = {
+  "image/jpeg": { ext: "jpg", resourceType: "image" },
+  "image/png": { ext: "png", resourceType: "image" },
+  "image/webp": { ext: "webp", resourceType: "image" },
+  "image/gif": { ext: "gif", resourceType: "image" },
+  "application/pdf": { ext: "pdf", resourceType: "image" },
 };
 
 export async function POST(request: NextRequest) {
@@ -25,16 +37,16 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const extension = ALLOWED[file.type];
-  if (!extension) {
+  const allowed = ALLOWED[file.type];
+  if (!allowed) {
     return NextResponse.json(
-      { error: "Only JPG, PNG, or WebP images are allowed" },
+      { error: "Allowed file types: JPG, PNG, WebP, GIF, or PDF" },
       { status: 400 }
     );
   }
   if (file.size > MAX_BYTES) {
     return NextResponse.json(
-      { error: "Image must be 2 MB or smaller" },
+      { error: "File must be 4 MB or smaller" },
       { status: 400 }
     );
   }
@@ -45,11 +57,21 @@ export async function POST(request: NextRequest) {
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "")
-      .slice(0, 40) || "image";
-  const filename = `${Date.now().toString(36)}-${baseName}.${extension}`;
+      .slice(0, 40) || "file";
+  const publicId = `${baseName}-${Date.now().toString(36)}`;
 
   const buffer = Buffer.from(await file.arrayBuffer());
-  const url = await saveUpload(buffer, filename);
-
-  return NextResponse.json({ url }, { status: 201 });
+  try {
+    const url = await saveUpload(buffer, `${publicId}.${allowed.ext}`, {
+      resourceType: allowed.resourceType,
+      publicId,
+    });
+    return NextResponse.json({ url }, { status: 201 });
+  } catch (error) {
+    console.error("Upload failed:", error);
+    return NextResponse.json(
+      { error: "Upload failed — storage is not configured or unavailable" },
+      { status: 502 }
+    );
+  }
 }

@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 import { adminFetch } from "@/lib/admin-client";
 import Toast, { type ToastMessage } from "@/components/admin/Toast";
 import ImageUploadField from "@/components/admin/ImageUploadField";
+import FileUploadField from "@/components/admin/FileUploadField";
 
 interface ContentItem {
   key: string;
@@ -15,6 +16,11 @@ interface ContentItem {
 // Keys ending in _image get an image uploader instead of a text field.
 function isImageKey(key: string): boolean {
   return key.endsWith("_image");
+}
+
+// The resume gets a document (PDF) uploader.
+function isDocumentKey(key: string): boolean {
+  return key === "resume_url";
 }
 
 function prettifyKey(key: string): string {
@@ -94,6 +100,31 @@ export default function ContentEditor({ items }: { items: ContentItem[] }) {
                   label={prettifyKey(item.key)}
                   value={values[item.key] ?? ""}
                   onChange={(url) => setValues({ ...values, [item.key]: url })}
+                />
+                <div className="form-text mt-1">{keyTag}</div>
+              </div>
+            );
+          }
+
+          if (isDocumentKey(item.key)) {
+            return (
+              <div className="mb-4" key={item.key}>
+                <FileUploadField
+                  id={`content-${item.key}`}
+                  label={prettifyKey(item.key)}
+                  value={values[item.key] ?? ""}
+                  onChange={(url) => setValues({ ...values, [item.key]: url })}
+                  helpText="Upload your resume as a PDF (max 4 MB), or paste a link below."
+                />
+                <input
+                  type="text"
+                  className="form-control form-control-sm mt-2"
+                  placeholder="https://…"
+                  value={values[item.key] ?? ""}
+                  onChange={(event) =>
+                    setValues({ ...values, [item.key]: event.target.value })
+                  }
+                  aria-label={`${prettifyKey(item.key)} URL`}
                 />
                 <div className="form-text mt-1">{keyTag}</div>
               </div>

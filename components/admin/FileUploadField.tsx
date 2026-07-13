@@ -1,29 +1,36 @@
 "use client";
 
-import Image from "next/image";
 import { useRef, useState } from "react";
 
 const MAX_BYTES = 4 * 1024 * 1024;
-const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 
-interface ImageUploadFieldProps {
+interface FileUploadFieldProps {
   id: string;
   label: string;
   value: string;
   onChange: (url: string) => void;
+  /** Comma-separated MIME allow-list, mirrored on the server. */
+  allowedTypes?: string[];
+  /** `accept` attribute for the file input. */
+  accept?: string;
+  helpText?: string;
 }
 
 /**
- * Uploads to /api/admin/upload and reports back the stored public URL.
- * Client-side type/size checks mirror the server's (which stays the
- * authority).
+ * Uploads a document (e.g. the resume PDF) to /api/admin/upload and reports
+ * back the hosted Cloudinary URL. Unlike ImageUploadField it shows a link to
+ * the stored file rather than an image preview. Users can still paste an
+ * external URL into the box instead of uploading.
  */
-export default function ImageUploadField({
+export default function FileUploadField({
   id,
   label,
   value,
   onChange,
-}: ImageUploadFieldProps) {
+  allowedTypes = ["application/pdf"],
+  accept = "application/pdf,.pdf",
+  helpText = "PDF — max 4 MB.",
+}: FileUploadFieldProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -33,12 +40,12 @@ export default function ImageUploadField({
     if (!file) return;
     setError(null);
 
-    if (!ALLOWED_TYPES.includes(file.type)) {
-      setError("Only JPG, PNG, WebP, or GIF images are allowed.");
+    if (!allowedTypes.includes(file.type)) {
+      setError("That file type isn't allowed.");
       return;
     }
     if (file.size > MAX_BYTES) {
-      setError("Image must be 4 MB or smaller.");
+      setError("File must be 4 MB or smaller.");
       return;
     }
 
@@ -72,15 +79,10 @@ export default function ImageUploadField({
         {label}
       </label>
       {value && (
-        <div className="admin-image-preview mb-2">
-          <Image
-            src={value}
-            alt="Current image"
-            width={240}
-            height={135}
-            className="admin-image-preview-img"
-            unoptimized
-          />
+        <div className="admin-file-current mb-2">
+          <a href={value} target="_blank" rel="noopener noreferrer">
+            View current file
+          </a>
           <button
             type="button"
             className="btn btn-outline-danger btn-sm ms-3"
@@ -95,13 +97,13 @@ export default function ImageUploadField({
         id={id}
         type="file"
         className="form-control"
-        accept="image/jpeg,image/png,image/webp,image/gif"
+        accept={accept}
         onChange={handleFile}
         disabled={uploading}
         aria-describedby={`${id}-help`}
       />
       <div id={`${id}-help`} className="form-text">
-        JPG, PNG, WebP, or GIF — max 4 MB.
+        {helpText}
         {uploading && " Uploading…"}
       </div>
       {error && <div className="text-danger small mt-1">{error}</div>}

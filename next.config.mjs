@@ -1,5 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    // Uploads (project shots, hero photo) are served from Cloudinary.
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        pathname: "/**",
+      },
+    ],
+  },
   experimental: {
     /**
      * Client router cache: keep visited/prefetched pages fresh in the

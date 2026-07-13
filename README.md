@@ -102,27 +102,43 @@ in the admin (or drop the document) and re-run the seed.
 > The seeded experience dates are placeholders — set your real internship
 > dates in **Admin → Experience**.
 
-## Image storage in production
+## Media storage (Cloudinary)
 
-Local dev writes uploads to `public/uploads/` (git-ignored). **This does not
-work on Vercel** — the serverless filesystem is ephemeral and read-only.
+Every upload — project images, the hero photo, and the resume PDF — is streamed
+to **Cloudinary** and the hosted `secure_url` is stored in Mongo. This works
+identically in local dev and on Vercel (no writable filesystem needed). All of
+it goes through one abstraction: [`lib/storage.ts`](lib/storage.ts).
 
-All storage goes through a single abstraction:
-[`lib/storage.ts`](lib/storage.ts). To go to production, replace the body of
-`saveUpload()` with [Vercel Blob](https://vercel.com/docs/storage/vercel-blob)
-(`@vercel/blob` → `put(filename, buffer, { access: "public" })` → return
-`blob.url`) or Cloudinary, and add the storage host to `images.remotePatterns`
-in `next.config.mjs`. Nothing else changes.
+Configure three env vars (see `.env.example`):
+
+```
+CLOUDINARY_CLOUD_NAME=   # the account "Cloud name" — top of the dashboard,
+                         # NOT an API key's "Key Name"
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+```
+
+`res.cloudinary.com` is whitelisted in `images.remotePatterns`
+(`next.config.mjs`) so `next/image` can optimize the delivered URLs.
+
+**Limits & types.** The upload route accepts JPG/PNG/WebP/GIF and PDF up to
+**4 MB** — kept under Vercel's ~4.5 MB serverless request-body limit so uploads
+behave the same in production. To host larger media (e.g. video), upload
+directly from the browser to Cloudinary (signed upload) instead of proxying
+through the route.
+
+**PDF delivery.** If a resume link returns 401, enable *Settings → Security →
+"Allow delivery of PDF and ZIP files"* in the Cloudinary console (off by
+default on some accounts).
 
 ## Deploying to Vercel
 
 1. Push the repo to GitHub and import it in Vercel.
 2. Set all env vars from `.env.example` in *Project Settings → Environment
    Variables* (`NEXTAUTH_URL` and `SITE_URL` = your production URL; paste the
-   **raw** password hash).
+   **raw** password hash; include the three `CLOUDINARY_*` values).
 3. Make sure Atlas network access allows Vercel (step 4 above). The build
    pre-renders pages, so the database must be reachable **at build time**.
-4. Swap `lib/storage.ts` to Blob/Cloudinary (above) before uploading images.
 
 ## Architecture notes
 
