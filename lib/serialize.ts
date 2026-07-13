@@ -12,6 +12,12 @@ export function serialize<T>(data: unknown): T {
   return JSON.parse(JSON.stringify(data)) as T;
 }
 
+export interface MediaItemDTO {
+  type: "image" | "video";
+  url: string;
+  publicId?: string;
+}
+
 export interface ProjectDTO {
   _id: string;
   title: string;
@@ -22,6 +28,8 @@ export interface ProjectDTO {
   liveUrl?: string;
   githubUrl?: string;
   imageUrl?: string;
+  /** Undefined on documents created before the media gallery existed. */
+  media?: MediaItemDTO[];
   featured: boolean;
   published: boolean;
   sortOrder: number;

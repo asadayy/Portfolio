@@ -106,6 +106,50 @@ export default async function ProjectDetailPage({ params }: Params) {
       <article className="detail-body">
         <Markdown>{project.longDescription}</Markdown>
       </article>
+
+      {(() => {
+        // Everything except the banner (already shown as the hero above).
+        const gallery = (project.media ?? []).filter(
+          (item) => item.url !== project.imageUrl
+        );
+        if (gallery.length === 0) return null;
+        return (
+          <section className="detail-gallery" aria-label="Project media">
+            <h2 className="detail-gallery-title">Gallery</h2>
+            <div className="detail-gallery-grid">
+              {gallery.map((item, index) =>
+                item.type === "video" ? (
+                  <div
+                    key={`${item.url}-${index}`}
+                    className="detail-gallery-item detail-gallery-item--video"
+                  >
+                    <video
+                      src={item.url}
+                      controls
+                      playsInline
+                      preload="metadata"
+                      className="detail-gallery-video"
+                    />
+                  </div>
+                ) : (
+                  <div
+                    key={`${item.url}-${index}`}
+                    className="detail-gallery-item ratio ratio-16x9"
+                  >
+                    <Image
+                      src={item.url}
+                      alt={`${project.title} media ${index + 1}`}
+                      fill
+                      sizes="(max-width: 991px) 100vw, 420px"
+                      className="detail-gallery-img"
+                    />
+                  </div>
+                )
+              )}
+            </div>
+          </section>
+        );
+      })()}
     </main>
   );
 }

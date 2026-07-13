@@ -2,10 +2,20 @@
 
 import { useState } from "react";
 
-import type { ProjectDTO } from "@/lib/serialize";
+import type { MediaItemDTO, ProjectDTO } from "@/lib/serialize";
 import type { ProjectInput } from "@/lib/validation";
-import ImageUploadField from "@/components/admin/ImageUploadField";
+import ProjectMediaField from "@/components/admin/ProjectMediaField";
 import MarkdownField from "@/components/admin/MarkdownField";
+
+/**
+ * Legacy projects have `imageUrl` but no `media[]`. Seed the gallery from that
+ * single image so nothing is lost when the project is first re-saved.
+ */
+function initialMedia(project: ProjectDTO | null): MediaItemDTO[] {
+  if (project?.media && project.media.length > 0) return project.media;
+  if (project?.imageUrl) return [{ type: "image", url: project.imageUrl }];
+  return [];
+}
 
 function slugify(value: string): string {
   return value
@@ -41,6 +51,9 @@ export default function ProjectForm({
   );
   const [liveUrl, setLiveUrl] = useState(initial?.liveUrl ?? "");
   const [githubUrl, setGithubUrl] = useState(initial?.githubUrl ?? "");
+  const [media, setMedia] = useState<MediaItemDTO[]>(() =>
+    initialMedia(initial)
+  );
   const [imageUrl, setImageUrl] = useState(initial?.imageUrl ?? "");
   const [featured, setFeatured] = useState(initial?.featured ?? false);
   const [published, setPublished] = useState(initial?.published ?? true);
@@ -67,6 +80,7 @@ export default function ProjectForm({
       liveUrl: liveUrl.trim(),
       githubUrl: githubUrl.trim(),
       imageUrl,
+      media,
       featured,
       published,
       sortOrder,
@@ -178,11 +192,11 @@ export default function ProjectForm({
           />
         </div>
         <div className="col-12">
-          <ImageUploadField
-            id="project-image"
-            label="Project image"
-            value={imageUrl}
-            onChange={setImageUrl}
+          <ProjectMediaField
+            media={media}
+            primaryUrl={imageUrl}
+            onChange={setMedia}
+            onPrimaryChange={setImageUrl}
           />
         </div>
         <div className="col-md-3 col-6">

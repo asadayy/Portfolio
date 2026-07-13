@@ -1,5 +1,12 @@
 import { Schema, model, models, type Model } from "mongoose";
 
+export interface IProjectMedia {
+  type: "image" | "video";
+  url: string;
+  /** Cloudinary public_id, kept so the asset can be managed later. */
+  publicId?: string;
+}
+
 export interface IProject {
   title: string;
   slug: string;
@@ -8,7 +15,13 @@ export interface IProject {
   techStack: string[];
   liveUrl?: string;
   githubUrl?: string;
+  /**
+   * The primary/banner image URL shown on project cards. Always an image
+   * (never a video) — this is one of the `media` image items, promoted.
+   */
   imageUrl?: string;
+  /** Full gallery: images and videos, in admin-defined order. */
+  media: IProjectMedia[];
   featured: boolean;
   /** Drafts (false) are hidden from all public pages but editable in admin. */
   published: boolean;
@@ -16,6 +29,15 @@ export interface IProject {
   createdAt: Date;
   updatedAt: Date;
 }
+
+const MediaSchema = new Schema<IProjectMedia>(
+  {
+    type: { type: String, enum: ["image", "video"], required: true },
+    url: { type: String, required: true, trim: true },
+    publicId: { type: String, trim: true },
+  },
+  { _id: false }
+);
 
 const ProjectSchema = new Schema<IProject>(
   {
@@ -50,6 +72,7 @@ const ProjectSchema = new Schema<IProject>(
     liveUrl: { type: String, trim: true },
     githubUrl: { type: String, trim: true },
     imageUrl: { type: String, trim: true },
+    media: { type: [MediaSchema], default: [] },
     featured: { type: Boolean, default: false },
     published: { type: Boolean, default: true },
     sortOrder: { type: Number, default: 0 },

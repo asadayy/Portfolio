@@ -25,30 +25,50 @@ const imageRef = z
 
 const isoDay = /^\d{4}-\d{2}-\d{2}/;
 
-export const projectSchema = z.object({
-  title: z.string().trim().min(1, "Title is required").max(120),
-  slug: z
-    .string()
-    .trim()
-    .toLowerCase()
-    .regex(
-      /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
-      "Slug must be kebab-case (letters, numbers, hyphens)"
-    ),
-  shortDescription: z
-    .string()
-    .trim()
-    .min(1, "Short description is required")
-    .max(300),
-  longDescription: z.string().trim().min(1, "Long description is required"),
-  techStack: z.array(z.string().trim().min(1)).default([]),
-  liveUrl: optionalUrl,
-  githubUrl: optionalUrl,
-  imageUrl: imageRef,
-  featured: z.boolean().default(false),
-  published: z.boolean().default(true),
-  sortOrder: z.coerce.number().int().min(0).default(0),
+const mediaItemSchema = z.object({
+  type: z.enum(["image", "video"]),
+  url: z.string().trim().url("Each media item needs a valid URL"),
+  publicId: z.string().trim().optional(),
 });
+
+export const projectSchema = z
+  .object({
+    title: z.string().trim().min(1, "Title is required").max(120),
+    slug: z
+      .string()
+      .trim()
+      .toLowerCase()
+      .regex(
+        /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+        "Slug must be kebab-case (letters, numbers, hyphens)"
+      ),
+    shortDescription: z
+      .string()
+      .trim()
+      .min(1, "Short description is required")
+      .max(300),
+    longDescription: z.string().trim().min(1, "Long description is required"),
+    techStack: z.array(z.string().trim().min(1)).default([]),
+    liveUrl: optionalUrl,
+    githubUrl: optionalUrl,
+    imageUrl: imageRef,
+    media: z.array(mediaItemSchema).default([]),
+    featured: z.boolean().default(false),
+    published: z.boolean().default(true),
+    sortOrder: z.coerce.number().int().min(0).default(0),
+  })
+  // The banner (imageUrl) must never point at a video.
+  .superRefine((data, ctx) => {
+    if (!data.imageUrl) return;
+    const match = data.media.find((item) => item.url === data.imageUrl);
+    if (match && match.type === "video") {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["imageUrl"],
+        message: "A video cannot be used as the banner image.",
+      });
+    }
+  });
 
 export const experienceSchema = z
   .object({

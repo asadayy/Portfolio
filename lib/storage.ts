@@ -78,3 +78,30 @@ export async function saveUpload(
     stream.end(buffer);
   });
 }
+
+/** Cloud name + api key are safe to expose to the browser (not the secret). */
+export function getCloudinaryPublicConfig(): {
+  cloudName: string;
+  apiKey: string;
+} {
+  ensureConfigured();
+  return {
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME!,
+    apiKey: process.env.CLOUDINARY_API_KEY!,
+  };
+}
+
+/**
+ * Signs a set of upload params so the browser can upload large files (video)
+ * directly to Cloudinary without proxying them through our serverless
+ * function (which is capped at ~4.5 MB). The secret never leaves the server.
+ */
+export function signUploadParams(
+  params: Record<string, string | number>
+): string {
+  ensureConfigured();
+  return cloudinary.utils.api_sign_request(
+    params,
+    process.env.CLOUDINARY_API_SECRET!
+  );
+}
