@@ -5,6 +5,7 @@ import Project from "@/models/Project";
 import Experience from "@/models/Experience";
 import Education from "@/models/Education";
 import Activity from "@/models/Activity";
+import Certificate from "@/models/Certificate";
 import TechStackItem from "@/models/TechStackItem";
 import { TECH_CATEGORIES, type TechCategory } from "@/lib/constants";
 import SiteContent from "@/models/SiteContent";
@@ -14,6 +15,7 @@ import {
   type ExperienceDTO,
   type EducationDTO,
   type ActivityDTO,
+  type CertificateDTO,
   type TechStackItemDTO,
   type SiteContentDTO,
 } from "@/lib/serialize";
@@ -94,6 +96,14 @@ export const getActivities = cache(async (): Promise<ActivityDTO[]> => {
     .sort({ sortOrder: 1, createdAt: 1 })
     .lean();
   return serialize<ActivityDTO[]>(docs);
+});
+
+export const getCertificates = cache(async (): Promise<CertificateDTO[]> => {
+  await dbConnect();
+  const docs = await Certificate.find()
+    .sort({ sortOrder: 1, issueDate: -1 })
+    .lean();
+  return serialize<CertificateDTO[]>(docs);
 });
 
 export const getTechItems = cache(async (): Promise<TechStackItemDTO[]> => {

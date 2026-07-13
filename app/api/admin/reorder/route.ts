@@ -8,6 +8,7 @@ import Project from "@/models/Project";
 import Experience from "@/models/Experience";
 import Education from "@/models/Education";
 import Activity from "@/models/Activity";
+import Certificate from "@/models/Certificate";
 import TechStackItem from "@/models/TechStackItem";
 import {
   requireAdmin,
@@ -16,7 +17,14 @@ import {
 } from "@/lib/api-helpers";
 
 const reorderSchema = z.object({
-  type: z.enum(["projects", "experience", "education", "activities", "tech"]),
+  type: z.enum([
+    "projects",
+    "experience",
+    "education",
+    "activities",
+    "certificates",
+    "tech",
+  ]),
   ids: z
     .array(z.string().refine(isValidObjectId, "Invalid id"))
     .min(1, "Nothing to reorder"),
@@ -28,6 +36,7 @@ const MODELS: Record<string, Model<any>> = {
   experience: Experience,
   education: Education,
   activities: Activity,
+  certificates: Certificate,
   tech: TechStackItem,
 };
 

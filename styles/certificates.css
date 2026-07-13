@@ -1,0 +1,74 @@
+/* Certificates page */
+
+.certificates-page .certificates-header {
+  max-width: 62ch;
+}
+
+.certificates-page .certificates-intro {
+  font-size: 1.05rem;
+}
+
+.cert-card {
+  border: 1px solid var(--line);
+  border-radius: 0.85rem;
+  overflow: hidden;
+}
+
+/* Document preview — contain (never crop a certificate's text) */
+.cert-media {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  background: var(--surface-raised);
+  border-bottom: 1px solid var(--line);
+}
+
+.cert-img {
+  object-fit: contain;
+  padding: 0.75rem;
+}
+
+.cert-media--placeholder {
+  display: grid;
+  place-items: center;
+  color: var(--text-muted);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cert-img {
+    transition: transform 0.3s ease;
+  }
+
+  a.cert-media:hover .cert-img,
+  a.cert-media:focus-visible .cert-img {
+    transform: scale(1.03);
+  }
+}
+
+.cert-issuer {
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.92rem;
+}
+
+.cert-id {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.cert-links .cert-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--text-strong);
+}
+
+.cert-links .cert-link:hover,
+.cert-links .cert-link:focus-visible {
+  color: var(--accent-2);
+  text-decoration: underline;
+}

@@ -11,6 +11,7 @@ type ReorderType =
   | "experience"
   | "education"
   | "activities"
+  | "certificates"
   | "tech";
 
 /**

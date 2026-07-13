@@ -77,6 +77,19 @@ export interface ActivityDTO {
   updatedAt: string;
 }
 
+export interface CertificateDTO {
+  _id: string;
+  title: string;
+  issuer: string;
+  issueDate: string | null;
+  credentialId?: string;
+  credentialUrl?: string;
+  fileUrl?: string;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface TechStackItemDTO {
   _id: string;
   name: string;

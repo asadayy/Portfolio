@@ -8,10 +8,12 @@ import Project from "@/models/Project";
 import Experience from "@/models/Experience";
 import Education from "@/models/Education";
 import Activity from "@/models/Activity";
+import Certificate from "@/models/Certificate";
 import TechStackItem from "@/models/TechStackItem";
 import SiteContent from "@/models/SiteContent";
 import {
   ActivitiesIcon,
+  CertificateIcon,
   ContentIcon,
   DashboardIcon,
   EducationIcon,
@@ -46,6 +48,7 @@ export default async function AdminDashboardPage() {
     experiences,
     education,
     activities,
+    certificates,
     techItems,
     contentKeys,
   ] = await Promise.all([
@@ -56,6 +59,7 @@ export default async function AdminDashboardPage() {
     Experience.countDocuments(),
     Education.countDocuments(),
     Activity.countDocuments(),
+    Certificate.countDocuments(),
     TechStackItem.countDocuments(),
     SiteContent.countDocuments(),
   ]);
@@ -102,6 +106,14 @@ export default async function AdminDashboardPage() {
       hint: "leadership & extracurriculars",
       Icon: ActivitiesIcon,
       tone: "pink",
+    },
+    {
+      href: "/admin/certificates",
+      label: "Certificates",
+      count: certificates,
+      hint: "credentials & licences",
+      Icon: CertificateIcon,
+      tone: "orange",
     },
     {
       href: "/admin/tech",

@@ -139,3 +139,13 @@ export function ActivitiesIcon(props: IconProps) {
     </svg>
   );
 }
+
+export function CertificateIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <circle cx="12" cy="9" r="5.5" />
+      <path d="m8.8 13.6-1.55 7.15 4.75-2.5 4.75 2.5-1.55-7.15" />
+      <path d="M12 6.8l.95 1.9 2.1.3-1.5 1.5.35 2.1-1.9-1-1.9 1 .35-2.1-1.5-1.5 2.1-.3.95-1.9Z" />
+    </svg>
+  );
+}

@@ -406,6 +406,9 @@
 .admin-stat-card--pink {
   --tone: #ec4899;
 }
+.admin-stat-card--orange {
+  --tone: #f97316;
+}
 
 .admin-stat-top {
   display: flex;

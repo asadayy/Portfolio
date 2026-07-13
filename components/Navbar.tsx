@@ -11,6 +11,7 @@ const LINKS = [
   { href: "/experience", label: "Experience" },
   { href: "/education", label: "Education" },
   { href: "/activities", label: "Activities" },
+  { href: "/certificates", label: "Certificates" },
 ];
 
 export default function Navbar() {

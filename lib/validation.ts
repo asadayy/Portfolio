@@ -126,6 +126,22 @@ export const activitySchema = z.object({
   sortOrder: z.coerce.number().int().min(0).default(0),
 });
 
+export const certificateSchema = z.object({
+  title: z.string().trim().min(1, "Title is required").max(160),
+  issuer: z.string().trim().min(1, "Issuer is required").max(160),
+  issueDate: z
+    .union([
+      z.null(),
+      z.literal(""),
+      z.string().regex(isoDay, "Issue date must be a valid date (YYYY-MM-DD)"),
+    ])
+    .transform((value) => (value ? value : null)),
+  credentialId: z.string().trim().max(120).optional().default(""),
+  credentialUrl: optionalUrl,
+  fileUrl: optionalUrl,
+  sortOrder: z.coerce.number().int().min(0).default(0),
+});
+
 export const techItemSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(60),
   category: z.enum(TECH_CATEGORIES, {
@@ -159,5 +175,6 @@ export type ProjectInput = z.infer<typeof projectSchema>;
 export type ExperienceInput = z.infer<typeof experienceSchema>;
 export type EducationInput = z.infer<typeof educationSchema>;
 export type ActivityInput = z.infer<typeof activitySchema>;
+export type CertificateInput = z.infer<typeof certificateSchema>;
 export type TechItemInput = z.infer<typeof techItemSchema>;
 export type SiteContentInput = z.infer<typeof siteContentSchema>;
