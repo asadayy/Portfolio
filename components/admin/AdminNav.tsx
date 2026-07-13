@@ -4,8 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import {
+  ActivitiesIcon,
   ContentIcon,
   DashboardIcon,
+  EducationIcon,
   ExperienceIcon,
   ProjectsIcon,
   TechIcon,
@@ -15,6 +17,8 @@ const LINKS = [
   { href: "/admin", label: "Dashboard", exact: true, Icon: DashboardIcon },
   { href: "/admin/projects", label: "Projects", Icon: ProjectsIcon },
   { href: "/admin/experience", label: "Experience", Icon: ExperienceIcon },
+  { href: "/admin/education", label: "Education", Icon: EducationIcon },
+  { href: "/admin/activities", label: "Activities", Icon: ActivitiesIcon },
   { href: "/admin/tech", label: "Tech stack", Icon: TechIcon },
   { href: "/admin/content", label: "Site content", Icon: ContentIcon },
 ];

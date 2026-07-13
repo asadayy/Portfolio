@@ -117,3 +117,25 @@ export function TrendUpIcon(props: IconProps) {
     </svg>
   );
 }
+
+export function EducationIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <path d="M22 10 12 5 2 10l10 5 10-5Z" />
+      <path d="M6 12v5c0 1 2.7 2.5 6 2.5s6-1.5 6-2.5v-5" />
+      <path d="M22 10v6" />
+    </svg>
+  );
+}
+
+export function ActivitiesIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <path d="M8 21h8" />
+      <path d="M12 17v4" />
+      <path d="M7 4h10v5a5 5 0 0 1-10 0V4Z" />
+      <path d="M17 5h3v2a3 3 0 0 1-3 3" />
+      <path d="M7 5H4v2a3 3 0 0 0 3 3" />
+    </svg>
+  );
+}

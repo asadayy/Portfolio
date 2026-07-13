@@ -51,6 +51,29 @@ export interface ExperienceDTO {
   updatedAt: string;
 }
 
+export interface EducationDTO {
+  _id: string;
+  degree: string;
+  institution: string;
+  location?: string;
+  startDate: string;
+  endDate: string | null;
+  grade?: string;
+  description?: string;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ActivityDTO {
+  _id: string;
+  title: string;
+  description: string;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface TechStackItemDTO {
   _id: string;
   name: string;

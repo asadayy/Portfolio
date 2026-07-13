@@ -6,7 +6,12 @@ import { useEffect, useRef, useState } from "react";
 import { adminFetch } from "@/lib/admin-client";
 import type { ToastMessage } from "@/components/admin/Toast";
 
-type ReorderType = "projects" | "experience" | "tech";
+type ReorderType =
+  | "projects"
+  | "experience"
+  | "education"
+  | "activities"
+  | "tech";
 
 /**
  * HTML5 drag-and-drop row reordering for the admin tables. Reorders the

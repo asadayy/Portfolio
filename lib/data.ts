@@ -3,6 +3,8 @@ import { cache } from "react";
 import dbConnect from "@/lib/db";
 import Project from "@/models/Project";
 import Experience from "@/models/Experience";
+import Education from "@/models/Education";
+import Activity from "@/models/Activity";
 import TechStackItem from "@/models/TechStackItem";
 import { TECH_CATEGORIES, type TechCategory } from "@/lib/constants";
 import SiteContent from "@/models/SiteContent";
@@ -10,6 +12,8 @@ import {
   serialize,
   type ProjectDTO,
   type ExperienceDTO,
+  type EducationDTO,
+  type ActivityDTO,
   type TechStackItemDTO,
   type SiteContentDTO,
 } from "@/lib/serialize";
@@ -74,6 +78,22 @@ export const getExperiences = cache(async (): Promise<ExperienceDTO[]> => {
     .sort({ sortOrder: 1, startDate: -1 })
     .lean();
   return serialize<ExperienceDTO[]>(docs);
+});
+
+export const getEducation = cache(async (): Promise<EducationDTO[]> => {
+  await dbConnect();
+  const docs = await Education.find()
+    .sort({ sortOrder: 1, endDate: -1 })
+    .lean();
+  return serialize<EducationDTO[]>(docs);
+});
+
+export const getActivities = cache(async (): Promise<ActivityDTO[]> => {
+  await dbConnect();
+  const docs = await Activity.find()
+    .sort({ sortOrder: 1, createdAt: 1 })
+    .lean();
+  return serialize<ActivityDTO[]>(docs);
 });
 
 export const getTechItems = cache(async (): Promise<TechStackItemDTO[]> => {

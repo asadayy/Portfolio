@@ -6,6 +6,8 @@ import type { Model } from "mongoose";
 import dbConnect from "@/lib/db";
 import Project from "@/models/Project";
 import Experience from "@/models/Experience";
+import Education from "@/models/Education";
+import Activity from "@/models/Activity";
 import TechStackItem from "@/models/TechStackItem";
 import {
   requireAdmin,
@@ -14,7 +16,7 @@ import {
 } from "@/lib/api-helpers";
 
 const reorderSchema = z.object({
-  type: z.enum(["projects", "experience", "tech"]),
+  type: z.enum(["projects", "experience", "education", "activities", "tech"]),
   ids: z
     .array(z.string().refine(isValidObjectId, "Invalid id"))
     .min(1, "Nothing to reorder"),
@@ -24,6 +26,8 @@ const reorderSchema = z.object({
 const MODELS: Record<string, Model<any>> = {
   projects: Project,
   experience: Experience,
+  education: Education,
+  activities: Activity,
   tech: TechStackItem,
 };
 

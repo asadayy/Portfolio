@@ -6,11 +6,15 @@ import { authOptions } from "@/lib/auth";
 import dbConnect from "@/lib/db";
 import Project from "@/models/Project";
 import Experience from "@/models/Experience";
+import Education from "@/models/Education";
+import Activity from "@/models/Activity";
 import TechStackItem from "@/models/TechStackItem";
 import SiteContent from "@/models/SiteContent";
 import {
+  ActivitiesIcon,
   ContentIcon,
   DashboardIcon,
+  EducationIcon,
   ExperienceIcon,
   ExternalIcon,
   PlusIcon,
@@ -34,16 +38,27 @@ function greeting(hour: number): string {
 
 export default async function AdminDashboardPage() {
   await dbConnect();
-  const [session, projects, featured, drafts, experiences, techItems, contentKeys] =
-    await Promise.all([
-      getServerSession(authOptions),
-      Project.countDocuments(),
-      Project.countDocuments({ featured: true }),
-      Project.countDocuments({ published: false }),
-      Experience.countDocuments(),
-      TechStackItem.countDocuments(),
-      SiteContent.countDocuments(),
-    ]);
+  const [
+    session,
+    projects,
+    featured,
+    drafts,
+    experiences,
+    education,
+    activities,
+    techItems,
+    contentKeys,
+  ] = await Promise.all([
+    getServerSession(authOptions),
+    Project.countDocuments(),
+    Project.countDocuments({ featured: true }),
+    Project.countDocuments({ published: false }),
+    Experience.countDocuments(),
+    Education.countDocuments(),
+    Activity.countDocuments(),
+    TechStackItem.countDocuments(),
+    SiteContent.countDocuments(),
+  ]);
 
   const now = new Date();
   const today = now.toLocaleDateString("en-US", {
@@ -71,6 +86,22 @@ export default async function AdminDashboardPage() {
       hint: "timeline entries",
       Icon: ExperienceIcon,
       tone: "cyan",
+    },
+    {
+      href: "/admin/education",
+      label: "Education",
+      count: education,
+      hint: "qualifications",
+      Icon: EducationIcon,
+      tone: "emerald",
+    },
+    {
+      href: "/admin/activities",
+      label: "Activities",
+      count: activities,
+      hint: "leadership & extracurriculars",
+      Icon: ActivitiesIcon,
+      tone: "pink",
     },
     {
       href: "/admin/tech",

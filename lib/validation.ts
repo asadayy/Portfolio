@@ -94,6 +94,36 @@ export const experienceSchema = z
     { message: "End date cannot be before the start date", path: ["endDate"] }
   );
 
+export const educationSchema = z
+  .object({
+    degree: z.string().trim().min(1, "Degree is required").max(160),
+    institution: z.string().trim().min(1, "Institution is required").max(200),
+    location: z.string().trim().max(120).optional().default(""),
+    startDate: z
+      .string()
+      .regex(isoDay, "Start date must be a valid date (YYYY-MM-DD)"),
+    endDate: z
+      .union([
+        z.null(),
+        z.literal(""),
+        z.string().regex(isoDay, "End date must be a valid date (YYYY-MM-DD)"),
+      ])
+      .transform((value) => (value ? value : null)),
+    grade: z.string().trim().max(120).optional().default(""),
+    description: z.string().trim().optional().default(""),
+    sortOrder: z.coerce.number().int().min(0).default(0),
+  })
+  .refine((data) => !data.endDate || data.endDate >= data.startDate, {
+    message: "End date cannot be before the start date",
+    path: ["endDate"],
+  });
+
+export const activitySchema = z.object({
+  title: z.string().trim().min(1, "Title is required").max(120),
+  description: z.string().trim().min(1, "Description is required"),
+  sortOrder: z.coerce.number().int().min(0).default(0),
+});
+
 export const techItemSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(60),
   category: z.enum(TECH_CATEGORIES, {
@@ -125,5 +155,7 @@ export const siteContentSchema = z.object({
 
 export type ProjectInput = z.infer<typeof projectSchema>;
 export type ExperienceInput = z.infer<typeof experienceSchema>;
+export type EducationInput = z.infer<typeof educationSchema>;
+export type ActivityInput = z.infer<typeof activitySchema>;
 export type TechItemInput = z.infer<typeof techItemSchema>;
 export type SiteContentInput = z.infer<typeof siteContentSchema>;
