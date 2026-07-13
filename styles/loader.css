@@ -1,0 +1,123 @@
+/* Branded loader — monogram inside counter-rotating rings */
+
+.loader-screen {
+  min-height: 60vh;
+  display: grid;
+  place-items: center;
+  padding: 3rem 1rem;
+}
+
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.15rem;
+}
+
+.loader-mark {
+  position: relative;
+  width: 86px;
+  height: 86px;
+  display: grid;
+  place-items: center;
+}
+
+.loader-ring {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.loader-ring--dashed {
+  inset: 0;
+  border: 1.5px dashed var(--text-strong);
+  opacity: 0.55;
+}
+
+.loader-ring--outer {
+  inset: -13px;
+  border: 1px solid var(--text-strong);
+  opacity: 0.14;
+}
+
+.loader-initials {
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--text-strong);
+}
+
+.loader-label {
+  display: inline-flex;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  /* balance the tracking so the label reads centered */
+  padding-left: 0.32em;
+}
+
+/* Animated ellipsis (fixed-width so the label doesn't shift) */
+.loader-dots {
+  width: 1.1em;
+  text-align: left;
+}
+
+.loader-dots::after {
+  content: "";
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .loader-ring--dashed {
+    animation: loader-spin 2.4s linear infinite;
+  }
+
+  .loader-ring--outer {
+    animation: loader-spin-rev 5s linear infinite;
+  }
+
+  .loader-initials {
+    animation: loader-breathe 1.6s ease-in-out infinite;
+  }
+
+  .loader-dots::after {
+    animation: loader-dots 1.4s steps(1, end) infinite;
+  }
+
+  @keyframes loader-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes loader-spin-rev {
+    to {
+      transform: rotate(-360deg);
+    }
+  }
+
+  @keyframes loader-breathe {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.45;
+    }
+  }
+
+  @keyframes loader-dots {
+    0% {
+      content: "";
+    }
+    25% {
+      content: ".";
+    }
+    50% {
+      content: "..";
+    }
+    75% {
+      content: "...";
+    }
+  }
+}
