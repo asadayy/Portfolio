@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 
 import { getProjectBySlug, getProjects } from "@/lib/data";
 import Markdown from "@/components/Markdown";
+import ProjectGallery from "@/components/ProjectGallery";
 import { ExternalLinkIcon, GitHubIcon } from "@/components/icons";
 import "@/styles/project-detail.css";
 
@@ -107,49 +108,13 @@ export default async function ProjectDetailPage({ params }: Params) {
         <Markdown>{project.longDescription}</Markdown>
       </article>
 
-      {(() => {
+      <ProjectGallery
         // Everything except the banner (already shown as the hero above).
-        const gallery = (project.media ?? []).filter(
+        media={(project.media ?? []).filter(
           (item) => item.url !== project.imageUrl
-        );
-        if (gallery.length === 0) return null;
-        return (
-          <section className="detail-gallery" aria-label="Project media">
-            <h2 className="detail-gallery-title">Gallery</h2>
-            <div className="detail-gallery-grid">
-              {gallery.map((item, index) =>
-                item.type === "video" ? (
-                  <div
-                    key={`${item.url}-${index}`}
-                    className="detail-gallery-item detail-gallery-item--video"
-                  >
-                    <video
-                      src={item.url}
-                      controls
-                      playsInline
-                      preload="metadata"
-                      className="detail-gallery-video"
-                    />
-                  </div>
-                ) : (
-                  <div
-                    key={`${item.url}-${index}`}
-                    className="detail-gallery-item ratio ratio-16x9"
-                  >
-                    <Image
-                      src={item.url}
-                      alt={`${project.title} media ${index + 1}`}
-                      fill
-                      sizes="(max-width: 991px) 100vw, 420px"
-                      className="detail-gallery-img"
-                    />
-                  </div>
-                )
-              )}
-            </div>
-          </section>
-        );
-      })()}
+        )}
+        title={project.title}
+      />
     </main>
   );
 }
