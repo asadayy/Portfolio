@@ -1,23 +1,23 @@
 /* Branded loader — monogram inside counter-rotating rings */
 
 .loader-screen {
-  min-height: 60vh;
+  min-height: 72vh;
   display: grid;
   place-items: center;
-  padding: 3rem 1rem;
+  padding: 4rem 1rem;
 }
 
 .loader {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.15rem;
+  gap: 1.65rem;
 }
 
 .loader-mark {
   position: relative;
-  width: 86px;
-  height: 86px;
+  width: 132px;
+  height: 132px;
   display: grid;
   place-items: center;
 }
@@ -29,18 +29,26 @@
 
 .loader-ring--dashed {
   inset: 0;
-  border: 1.5px dashed var(--text-strong);
-  opacity: 0.55;
+  border: 2px dashed var(--text-strong);
+  opacity: 0.6;
 }
 
 .loader-ring--outer {
-  inset: -13px;
-  border: 1px solid var(--text-strong);
-  opacity: 0.14;
+  inset: -18px;
+  border: 1.5px solid var(--text-strong);
+  opacity: 0.16;
+}
+
+/* A solid rotating arc gives the loader a clear, prominent motion cue */
+.loader-ring--arc {
+  inset: -6px;
+  border: 3px solid transparent;
+  border-top-color: var(--text-strong);
+  opacity: 0.9;
 }
 
 .loader-initials {
-  font-size: 1.45rem;
+  font-size: 2.2rem;
   font-weight: 800;
   letter-spacing: 0.04em;
   color: var(--text-strong);
@@ -48,13 +56,13 @@
 
 .loader-label {
   display: inline-flex;
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  letter-spacing: 0.32em;
+  letter-spacing: 0.36em;
   text-transform: uppercase;
   color: var(--text-muted);
   /* balance the tracking so the label reads centered */
-  padding-left: 0.32em;
+  padding-left: 0.36em;
 }
 
 /* Animated ellipsis (fixed-width so the label doesn't shift) */
@@ -74,6 +82,10 @@
 
   .loader-ring--outer {
     animation: loader-spin-rev 5s linear infinite;
+  }
+
+  .loader-ring--arc {
+    animation: loader-spin 1s cubic-bezier(0.6, 0.05, 0.35, 0.95) infinite;
   }
 
   .loader-initials {

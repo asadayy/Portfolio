@@ -10,8 +10,9 @@ export default function Loader({ label = "Loading" }: { label?: string }) {
   return (
     <div className="loader" role="status" aria-live="polite">
       <div className="loader-mark" aria-hidden>
-        <span className="loader-ring loader-ring--dashed" />
         <span className="loader-ring loader-ring--outer" />
+        <span className="loader-ring loader-ring--dashed" />
+        <span className="loader-ring loader-ring--arc" />
         <span className="loader-initials">AB</span>
       </div>
       <span className="loader-label" aria-hidden>
