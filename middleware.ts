@@ -10,7 +10,14 @@ import { NextResponse, type NextRequest } from "next/server";
  */
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const token = await getToken({ req: request });
+  // Derive the session-cookie flavor from the actual request protocol.
+  // getToken's default derives it from NEXTAUTH_URL.startsWith("https://"),
+  // which silently reads the wrong cookie name (and rejects every valid
+  // session) when NEXTAUTH_URL is set without its protocol prefix.
+  const token = await getToken({
+    req: request,
+    secureCookie: request.nextUrl.protocol === "https:",
+  });
 
   if (pathname === "/admin/login") {
     if (token) {
