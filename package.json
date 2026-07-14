@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "seed": "tsx scripts/seed.ts",
-    "hash-password": "tsx scripts/hash-password.ts"
+    "create-admin": "tsx scripts/create-admin.ts"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

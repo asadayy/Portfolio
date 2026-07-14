@@ -32,27 +32,31 @@ All variables live in a single git-ignored `.env` file at the project root
 | Variable | Purpose |
 | --- | --- |
 | `MONGODB_URI` | MongoDB connection string, e.g. `mongodb+srv://USER:PASS@cluster0.xxxxx.mongodb.net/portfolio?retryWrites=true&w=majority` — keep the `/portfolio` db name in the path. Local MongoDB works too: `mongodb://localhost:27017/portfolio`. |
-| `ADMIN_USERNAME` | Admin login username. |
-| `ADMIN_PASSWORD_HASH` | bcrypt hash of the admin password (see below). |
 | `NEXTAUTH_SECRET` | Random secret for JWT signing: `node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"` |
 | `NEXTAUTH_URL` | `http://localhost:3000` in dev; your production URL on Vercel. |
 | `SITE_URL` | Absolute public URL used by SEO metadata, `sitemap.xml`, and `robots.txt`. |
 | `CLOUDINARY_CLOUD_NAME` | The account "Cloud name" from the top of the Cloudinary dashboard (NOT an API key's "Key Name"). |
 | `CLOUDINARY_API_KEY` | Cloudinary API key. |
-| `CLOUDINARY_API_SECRET` | Cloudinary API secret (no `$`, so no escaping needed). |
+| `CLOUDINARY_API_SECRET` | Cloudinary API secret. |
 
-### Generating the admin password hash
+> Admin credentials are **not** env vars — they live in the database (see
+> below), so the same login works locally and on Vercel with nothing to
+> configure per-environment.
+
+### Creating the admin login
+
+Admin credentials are stored in the `AdminUser` collection in MongoDB (the
+password only ever as a bcrypt hash). Create — or reset the password of — an
+admin with:
 
 ```bash
-npm run hash-password -- "your-password-here"
+npm run create-admin -- "your-username" "your-strong-password"
 ```
 
-The script prints **two** values:
-
-1. an **escaped** line (`ADMIN_PASSWORD_HASH=\$2a\$12\$…`) to paste into
-   `.env` — bcrypt hashes contain `$`, which Next.js env loading would
-   otherwise expand as variable references and silently corrupt the hash;
-2. the **raw** hash for the Vercel dashboard (no escaping there).
+Because this writes to the database `MONGODB_URI` points at (your Atlas
+cluster), the same credential immediately works in local dev **and** on
+Vercel — there is nothing to paste into any environment. Re-run it any time to
+change the password.
 
 ## Creating the MongoDB Atlas cluster (free tier)
 
@@ -133,8 +137,11 @@ default on some accounts).
 
 1. Push the repo to GitHub and import it in Vercel.
 2. Set all env vars from the table above in *Project Settings → Environment
-   Variables* (`NEXTAUTH_URL` and `SITE_URL` = your production URL; paste the
-   **raw** password hash; include the three `CLOUDINARY_*` values).
+   Variables* (`NEXTAUTH_URL` and `SITE_URL` = your production URL; include the
+   three `CLOUDINARY_*` values). No admin credentials go here — they live in
+   the database.
+   Run `npm run create-admin` once (locally, against your Atlas `MONGODB_URI`)
+   to create the login; it then works on the deployed site too.
 3. Make sure Atlas network access allows Vercel (step 4 above). The build
    pre-renders pages, so the database must be reachable **at build time**.
 
@@ -178,4 +185,4 @@ default on some accounts).
 | `npm run build` / `npm start` | Production build / serve. |
 | `npm run lint` | ESLint (passes with zero errors). |
 | `npm run seed` | Idempotent database seed. |
-| `npm run hash-password -- "pw"` | Generate `ADMIN_PASSWORD_HASH`. |
+| `npm run create-admin -- "user" "pw"` | Create/reset the admin login in MongoDB. |
